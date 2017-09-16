@@ -1,0 +1,11 @@
+﻿<Application x:Class="BauChessViewer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BauChessViewer"
+			 xmlns:converter="clr-namespace:BauChessViewer.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+		<!-- Conversores -->
+		<converter:FileIconConverter x:Key="FileIconConverter" />
+	</Application.Resources>
+</Application>
