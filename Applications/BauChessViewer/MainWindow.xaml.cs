@@ -54,11 +54,23 @@ namespace BauChessViewer
 		{
 			if (ChessGameViewModel.Load(fileName, out string error))
 			{
+				// Limpia el último movimiento
+				ClearMovementPanel();
+				// Guarda el archivo en la configuración
 				Properties.Settings.Default.Game = fileName;
 				Properties.Settings.Default.Save();
 			}
 			else
 				MessageBox.Show(error);
+		}
+
+		/// <summary>
+		///		Limpia el panel de último movimiento
+		/// </summary>
+		private void ClearMovementPanel()
+		{
+			lblMovement.Text = "";
+			imgMovement.Source = null;
 		}
 
 		/// <summary>
@@ -89,10 +101,6 @@ namespace BauChessViewer
 			InitForm();
 		}
 
-		private void Button_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-		}
-
 		private void cmdOpenFile_Click(object sender, RoutedEventArgs e)
 		{	
 			OpenFile();
@@ -114,6 +122,11 @@ namespace BauChessViewer
 
 				if (lstView != null && ChessGameViewModel?.SelectedGame?.GameBoard?.SelectedMovement != null)
 					lstView.ScrollIntoView(ChessGameViewModel.SelectedGame.GameBoard.SelectedMovement);
+		}
+
+		private void cboGame_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			ClearMovementPanel();
 		}
 	}
 }

@@ -28,7 +28,6 @@ namespace Bau.Libraries.LibChessGame.Movements
 					if (!game.BoardSetup.IsWhiteMove)
 						actualColor = PieceBaseModel.PieceColor.Black;
 				}
-				System.Diagnostics.Debug.WriteLine(board.GetText());
 				// Carga los movimientos
 				foreach (MoveTextEntry move in game.MoveText)
 					switch (move)
@@ -101,13 +100,10 @@ namespace Bau.Libraries.LibChessGame.Movements
 
 								// Asigna los datos
 								newMovement.OriginPiece = ConvertPiece(move.Piece);
+								targetPiece = ConvertPiece(move.TargetPiece);
+								// Añade la pieza promocionada
 								if (move.PromotedPiece != null)
-								{
-									targetPiece = ConvertPiece(move.PromotedPiece);
-									newMovement.Type = MovementFigureModel.MovementType.Promote;
-								}
-								else
-									targetPiece = ConvertPiece(move.TargetPiece);
+									newMovement.PromotedPiece = ConvertPiece(move.PromotedPiece);
 								// Crea las acciones
 								newMovement.Actions.CreateActions(board, newMovement,
 																  ConvertCell(move.TargetSquare.Rank, move.TargetSquare.File),

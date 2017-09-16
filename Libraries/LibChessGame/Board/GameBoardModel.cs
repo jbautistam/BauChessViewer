@@ -192,7 +192,6 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// </summary>
 		internal void Execute(MovementFigureModel movement)
 		{
-			System.Diagnostics.Debug.WriteLine($"---->  {movement.Text} - {movement.Color}");
 			foreach (ActionBaseModel action in movement.Actions)
 				switch (action)
 				{
@@ -206,8 +205,6 @@ namespace Bau.Libraries.LibChessGame.Board
 							Promote(child);
 						break;
 				}
-			System.Diagnostics.Debug.WriteLine(GetText());
-			System.Diagnostics.Debug.WriteLine("Piezas: " + Pieces.Count);
 		}
 
 		/// <summary>
@@ -297,8 +294,6 @@ namespace Bau.Libraries.LibChessGame.Board
 				// Mueve la pieza
 				piece.Cell = action.To;
 				piece.IsMoved = true;
-
-				System.Diagnostics.Debug.WriteLine($"Move: {action.Type}-{action.Color} -> {action.From} / {action.To}");
 		}
 
 		/// <summary>
@@ -324,10 +319,7 @@ namespace Bau.Libraries.LibChessGame.Board
 			for (int index = Pieces.Count - 1; index >= 0; index--)
 				if (Pieces[index].Color == action.Color && 
 						Pieces[index].Cell.Row == action.From.Row && Pieces[index].Cell.Column == action.From.Column)
-				{
-					System.Diagnostics.Debug.WriteLine($"Capture: {Pieces[index].Type}-{Pieces[index].Color} -> {action.From}");
 					Pieces.RemoveAt(index);
-				}
 		}
 
 		/// <summary>
@@ -336,7 +328,6 @@ namespace Bau.Libraries.LibChessGame.Board
 		private void Promote(ActionPromoteModel action)
 		{
 			AddPiece(action.Type, action.Color, action.To.Row, action.To.Column);
-			System.Diagnostics.Debug.WriteLine($"Promote: {action.Type}-{action.Color} -> {action.To}");
 		}
 
 		/// <summary>

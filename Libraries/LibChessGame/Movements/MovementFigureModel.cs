@@ -21,9 +21,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 			/// <summary>Enroque corto</summary>
 			CastleKingSide,
 			/// <summary>Enroque largo</summary>
-			CastleQueenSide,
-			/// <summary>Pieza promocionada</summary>
-			Promote
+			CastleQueenSide
 		}
 
 		/// <summary>
@@ -46,20 +44,10 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// </summary>
 		public Pieces.PieceBaseModel.PieceType OriginPiece { get; internal set; }
 
-		///// <summary>
-		/////		Celda origen
-		///// </summary>
-		//public Board.CellModel OriginCell { get; } = new Board.CellModel(-1, -1);
-
-		///// <summary>
-		/////		Pieza destino
-		///// </summary>
-		//public Pieces.PieceBaseModel.PieceType? TargetPiece { get; internal set; }
-
-		///// <summary>
-		/////		Celda destino
-		///// </summary>
-		//public Board.CellModel TargetCell { get; } = new Board.CellModel(-1, -1);
+		/// <summary>
+		///		Pieza promocionada
+		/// </summary>
+		public Pieces.PieceBaseModel.PieceType? PromotedPiece { get; internal set; }
 
 		/// <summary>
 		///		Comentarios

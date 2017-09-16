@@ -40,21 +40,22 @@ namespace Bau.Libraries.LibChessGame.Movements
 
 				// Comprueba que se haya localizado la pieza que hizo el movimiento
 				if (piece == null)
-				{
-					System.Diagnostics.Debug.WriteLine("Error: " + movement.Text);
-					System.Diagnostics.Debug.WriteLine(board.GetText());
 					throw new Exceptions.GameReaderException($"No se encuentra ninguna pieza que pueda realizar el movimiento {movement.Text}");
-				}
 				// Crea el movimiento
 				CreateMoveAction(piece.Type, piece.Color, piece.Cell, target);
 				// Crea la captura
 				if (movement.Type == MovementFigureModel.MovementType.Capture || movement.Type == MovementFigureModel.MovementType.CaptureEnPassant)
 					CreateCaptureAction(board, targetPiece, GetNextColor(movement.Color), target);
 				// Crea la promoción
-				if (movement.Type == MovementFigureModel.MovementType.Promote)
+				if (movement.PromotedPiece != null)
 				{
-					CreateCaptureAction(board, movement.OriginPiece, movement.Color, target);
-					CreatePromoteAction(targetPiece, movement.Color, target);
+					// Crea un movimiento para eliminar el peón que se ha promocionado
+					//? No llama a CreateCaptureAction porque si ha habido una captura en este mismo movimiento
+					//? la pieza aún no se habrá eliminado del destino y por tanto nos creará una captura
+					//? sobre la pieza que se ha eliminado ya
+					Add(new ActionCaptureModel(piece.Type, movement.Color, target));
+					// Crea una promoción
+					CreatePromoteAction(movement.PromotedPiece, movement.Color, target);
 				}
 		}
 

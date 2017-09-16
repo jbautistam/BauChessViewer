@@ -104,9 +104,9 @@ namespace BauChessViewer.Views.Controls
 					}
 					// Añade las etiquetas
 					for (int row = 0; row < 8; row++)
-						Cells.Add(CreateLabel(row, -1, (char) ('A' + row)));
+						Cells.Add(CreateLabel(row, -1, (char) ('0' + 8 - row)));
 					for (int column = 0; column < 8; column++)
-						Cells.Add(CreateLabel(-1, column, (char) ('1' + column)));
+						Cells.Add(CreateLabel(-1, column, (char) ('A' + column)));
 					// Añade las piezas
 					foreach (PieceBaseModel piece in ViewModel.SelectedGame.GameBoard.GameBoard.Pieces)
 						Cells.Add(CreateFigure(piece.Cell.Row, piece.Cell.Column, piece.Color, piece.Type));
@@ -289,8 +289,6 @@ namespace BauChessViewer.Views.Controls
 						}
 						cell.Label.Width = labelWidth;
 						cell.Label.Height = labelHeight;
-						//cell.Image.Width = width;
-						//cell.Image.Height = height;
 					}
 		}
 

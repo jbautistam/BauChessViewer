@@ -20,7 +20,7 @@
 		</Grid.ColumnDefinitions>
 		<ToolBarTray DockPanel.Dock="Top">
 			<ToolBar Cursor="" IsHitTestVisible="True">
-				<Button ToolTip="Abrir" MouseDown="Button_MouseDown" Click="cmdOpenFile_Click">
+				<Button ToolTip="Abrir" Click="cmdOpenFile_Click">
 					<Image Source="Resources/Images/Folder.png" />
 				</Button>
 				<Button ToolTip="Anterior" Click="cmdPreviousMovement_Click">
@@ -31,7 +31,8 @@
 				</Button>
 			</ToolBar>
 		</ToolBarTray>
-		<ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Games}" SelectedItem="{Binding Path=SelectedGame}" Text="{Binding Title}">
+		<ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Games}" SelectedItem="{Binding Path=SelectedGame}" Text="{Binding Title}"
+			SelectionChanged="cboGame_SelectionChanged">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Vertical">
