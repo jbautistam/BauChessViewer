@@ -217,6 +217,14 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		Carga una imagen
 		/// </summary>
+		internal BitmapImage LoadImage(PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
+		{
+			return LoadImage(GetImageFileName(color, type));
+		}
+
+		/// <summary>
+		///		Carga una imagen
+		/// </summary>
 		private BitmapImage LoadImage(string fileName)
 		{
 			BitmapImage image = null;

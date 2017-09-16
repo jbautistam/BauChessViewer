@@ -73,6 +73,7 @@ namespace BauChessViewer
 					if (movement != null)
 					{
 						lblMovement.Text = movement.Movement.Text;
+						imgMovement.Source = udtBoard.LoadImage(movement.Color, movement.Piece);
 						udtBoard.ShowMovement(movement, back);
 					}
 			}
@@ -105,6 +106,14 @@ namespace BauChessViewer
 		private void cmdPreviousMovement_Click(object sender, RoutedEventArgs e)
 		{
 			ShowMovement(true);
+		}
+
+		private void lstMovements_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			System.Windows.Controls.ListBox lstView = sender as System.Windows.Controls.ListBox;
+
+				if (lstView != null && ChessGameViewModel?.SelectedGame?.GameBoard?.SelectedMovement != null)
+					lstView.ScrollIntoView(ChessGameViewModel.SelectedGame.GameBoard.SelectedMovement);
 		}
 	}
 }
