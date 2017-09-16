@@ -15,7 +15,7 @@ namespace BauChessViewer.ViewModels
 		private PieceBaseModel.PieceType _piece;
 		private PieceBaseModel.PieceColor _color;
 		private string _whiteMovementText, _blackMovementText, _time;
-		private SolidColorBrush _background, _foregroud;
+		private SolidColorBrush _foregroud;
 
 		public MovementFigureViewModel(MovementFigureModel movement)
 		{
@@ -34,7 +34,6 @@ namespace BauChessViewer.ViewModels
 			}
 			Time = "01:07";
 			// Inicializa los objetos adicionales
-			Background = new SolidColorBrush(Colors.White);
 			Foreground = new SolidColorBrush(Colors.Black);
 		}
 
@@ -113,15 +112,6 @@ namespace BauChessViewer.ViewModels
 		{
 			get { return _time; }
 			set { CheckProperty(ref _time, value); }
-		}
-
-		/// <summary>
-		///		Color de fondo
-		/// </summary>
-		public SolidColorBrush Background 
-		{ 
-			get { return _background; }
-			set { CheckObject(ref _background, value); }
 		}
 
 		/// <summary>

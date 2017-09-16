@@ -47,7 +47,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 				// Añade las etiquetas
 				foreach (KeyValuePair<string, string> tag in game.Tags)
 					newGame.Tags.Add(new KeyValuePair<string, string>(tag.Key, tag.Value));
-				//TODO --> Queda inicializa el tablero con BoardSetup
+				//TODO --> Queda inicializar el tablero con BoardSetup
 				// Carga los movimientos
 				try
 				{

@@ -59,7 +59,7 @@
 			<ListBox.Resources>
 				<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
 				<DataTemplate DataType="{x:Type viewModels:MovementFigureViewModel}">
-					<Grid Background="{Binding Path=Background}" HorizontalAlignment="Stretch">
+					<Grid HorizontalAlignment="Stretch">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
