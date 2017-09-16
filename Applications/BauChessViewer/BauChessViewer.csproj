@@ -61,9 +61,6 @@
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
     <Compile Include="ViewModels\MovementGameEndViewModel.cs" />
     <Compile Include="ViewModels\PathComboImagesViewModel.cs" />
-    <Compile Include="Views\Controls\ChessBoardCellView.xaml.cs">
-      <DependentUpon>ChessBoardCellView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ChessGameViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\MovementFigureViewModel.cs" />
@@ -83,10 +80,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Controls\ChessBoardCellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Controls\ChessBoardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

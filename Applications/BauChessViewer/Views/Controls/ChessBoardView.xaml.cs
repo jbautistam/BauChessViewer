@@ -21,13 +21,14 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		private class Figure
 		{
-			public Figure(int row, int column, PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type, Image image)
+			public Figure(int row, int column, PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type, Image image, Label label)
 			{
 				Row = row;
 				Column = column;
 				Color = color;
 				Type = type;
 				Image = image;
+				Label = label;
 			}
 
 			/// <summary>
@@ -54,6 +55,11 @@ namespace BauChessViewer.Views.Controls
 			///		Imagen de la figura
 			/// </summary>
 			public Image Image { get; }
+
+			/// <summary>
+			///		Etiqueta
+			/// </summary>
+			public Label Label { get; }
 		}
 
 		public ChessBoardView()
@@ -86,12 +92,21 @@ namespace BauChessViewer.Views.Controls
 					udtCanvas.Children.Clear();
 					// Añade las celdas
 					for (int row = 0; row < 8; row++)
+					{
+						// Dibuja por columnas
 						for (int column = 0; column < 8; column++)
 						{
 							Cells.Add(CreateFigure(row, column, color, null));
 							color = GetNextColor(color);
 						}
+						// Cambia el color de inicio de la siguiente fila
 						color = GetNextColor(color);
+					}
+					// Añade las etiquetas
+					for (int row = 0; row < 8; row++)
+						Cells.Add(CreateLabel(row, -1, (char) ('A' + row)));
+					for (int column = 0; column < 8; column++)
+						Cells.Add(CreateLabel(-1, column, (char) ('1' + column)));
 					// Añade las piezas
 					foreach (PieceBaseModel piece in ViewModel.SelectedGame.GameBoard.GameBoard.Pieces)
 						Cells.Add(CreateFigure(piece.Cell.Row, piece.Cell.Column, piece.Color, piece.Type));
@@ -101,11 +116,31 @@ namespace BauChessViewer.Views.Controls
 		}
 
 		/// <summary>
+		///		Crea una etiqueta
+		/// </summary>
+		private Figure CreateLabel(int row, int column, char content)
+		{
+			Label label = new Label 
+									{ 
+										Content = content.ToString(), 
+										HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center,
+										VerticalContentAlignment = System.Windows.VerticalAlignment.Center,
+										FontSize = 16, 
+										FontWeight = System.Windows.FontWeights.Bold 
+									};
+
+				// Añade la figura al canvas
+				udtCanvas.Children.Add(label);
+				// Devuelve la figura generada
+				return new Figure(row, column, PieceBaseModel.PieceColor.White, null, null, label);
+		}
+
+		/// <summary>
 		///		Crea una figura
 		/// </summary>
 		private Figure CreateFigure(int row, int column, PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
 		{
-			Figure image = new Figure(row, column, color, type, CreateImage(color, type));
+			Figure image = new Figure(row, column, color, type, CreateImage(color, type), null);
 
 				// Devuelve la imagen
 				return image;
@@ -136,7 +171,7 @@ namespace BauChessViewer.Views.Controls
 		private void ChangeImages()
 		{
 			foreach (Figure piece in Cells)
-				if (piece != null)
+				if (piece != null && piece.Image != null)
 					piece.Image.Source = LoadImage(GetImageFileName(piece.Color, piece.Type));
 		}
 
@@ -213,22 +248,42 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		Muestra las imágenes
 		/// </summary>
-		public void ShowImages()
+		private void ShowImages()
 		{
-			int width = (int) ActualWidth / 8;
-			int height = (int) ActualHeight / 8;
+			int labelWidth = 30;
+			int labelHeight = 30;
+			int width = (int) (ActualWidth - labelWidth) / 8;
+			int height = (int) (ActualHeight - labelHeight) / 8;
 
 				foreach (Figure cell in Cells)
-				{
-					Canvas.SetTop(cell.Image, height * cell.Row);
-					Canvas.SetLeft(cell.Image, width * cell.Column);
-					cell.Image.Width = width;
-					cell.Image.Height = height;
-					if (cell.Type == null)
-						Canvas.SetZIndex(cell.Image, 0);
+					if (cell.Label == null)
+					{
+						Canvas.SetTop(cell.Image, labelHeight + height * cell.Row);
+						Canvas.SetLeft(cell.Image, labelWidth + width * cell.Column);
+						cell.Image.Width = width;
+						cell.Image.Height = height;
+						if (cell.Type == null)
+							Canvas.SetZIndex(cell.Image, 0);
+						else
+							Canvas.SetZIndex(cell.Image, 1);
+					}
 					else
-						Canvas.SetZIndex(cell.Image, 1);
-				}
+					{
+						if (cell.Column == -1) // ... cabeceras de fila
+						{
+							Canvas.SetTop(cell.Label, labelHeight + (height - labelHeight) / 2 + height * cell.Row);
+							Canvas.SetLeft(cell.Label, 0);
+						}
+						else // ... cabeceras de columna
+						{
+							Canvas.SetTop(cell.Label, 0);
+							Canvas.SetLeft(cell.Label, labelWidth +  (width - labelWidth) / 2 + width * cell.Column);
+						}
+						cell.Label.Width = labelWidth;
+						cell.Label.Height = labelHeight;
+						//cell.Image.Width = width;
+						//cell.Image.Height = height;
+					}
 		}
 
 		/// <summary>
@@ -313,7 +368,7 @@ namespace BauChessViewer.Views.Controls
 				if (figure.Type == type && figure.Color == color && figure.Row == cell.Row && figure.Column == cell.Column)
 					return figure;
 			// Devuelve una pieza vacía
-			return new Figure(-1, -1, color, null, null);
+			return new Figure(-1, -1, color, null, null, null);
 		}
 
 		/// <summary>
