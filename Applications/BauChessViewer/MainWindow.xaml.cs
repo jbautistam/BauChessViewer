@@ -23,6 +23,7 @@ namespace BauChessViewer
 		{
 			// Inicializa el tablero
 			ChessGameViewModel.Init();
+			ChessGameViewModel.ShowNextMovement += (sender, evntArgs) => ShowMovement(false);
 			udtBoard.Init(ChessGameViewModel);
 			// Carga el archivo inicial
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.Game))

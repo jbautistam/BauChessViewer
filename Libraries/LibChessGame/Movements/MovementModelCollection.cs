@@ -86,6 +86,9 @@ namespace Bau.Libraries.LibChessGame.Movements
 				newMovement.Color = actualColor;
 				newMovement.Type = ConvertMovement(move.Type);
 				newMovement.Text = move.ToString();
+				newMovement.IsCheck = move.IsCheck ?? false;
+				newMovement.IsDoubleCheck = move.IsDoubleCheck ?? false;
+				newMovement.IsCheckMate = move.IsCheckMate ?? false;
 				switch (newMovement.Type)
 				{
 					case MovementFigureModel.MovementType.CastleKingSide:
@@ -111,7 +114,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 																  targetPiece);
 						break;
 				}
-				newMovement.Remarks = move.Annotation?.ToString();
+				newMovement.Annotation = ConvertAnnotation(move.Annotation);
 				// Ejecuta los movimientos sobre el tablero
 				board.Execute(newMovement);
 				// Añade el movimiento
@@ -222,6 +225,71 @@ namespace Bau.Libraries.LibChessGame.Movements
 				default:
 					throw new NotImplementedException();
 			}
+		}
+
+		/// <summary>
+		///		Convierte una anotación
+		/// </summary>
+		private MovementFigureModel.AnnotationType? ConvertAnnotation(MoveAnnotation? annotation)
+		{
+			if (annotation == null)
+				return null;
+			else
+				switch (annotation)
+				{
+					case MoveAnnotation.MindBlowing:
+						return MovementFigureModel.AnnotationType.MindBlowing;
+					case MoveAnnotation.Brilliant:
+						return MovementFigureModel.AnnotationType.Brilliant;
+					case MoveAnnotation.Good:
+						return MovementFigureModel.AnnotationType.Good;
+					case MoveAnnotation.Interesting:
+						return MovementFigureModel.AnnotationType.Interesting;
+					case MoveAnnotation.Dubious:
+						return MovementFigureModel.AnnotationType.Dubious;
+					case MoveAnnotation.Mistake:
+						return MovementFigureModel.AnnotationType.Mistake;
+					case MoveAnnotation.Blunder:
+						return MovementFigureModel.AnnotationType.Blunder;
+					case MoveAnnotation.Abysmal:
+						return MovementFigureModel.AnnotationType.Abysmal;
+					case MoveAnnotation.FascinatingButUnsound:
+						return MovementFigureModel.AnnotationType.FascinatingButUnsound;
+					case MoveAnnotation.Unclear:
+						return MovementFigureModel.AnnotationType.Unclear;
+					case MoveAnnotation.WithCompensation:
+						return MovementFigureModel.AnnotationType.WithCompensation;
+					case MoveAnnotation.EvenPosition:
+						return MovementFigureModel.AnnotationType.EvenPosition;
+					case MoveAnnotation.SlightAdvantageWhite:
+						return MovementFigureModel.AnnotationType.SlightAdvantageWhite;
+					case MoveAnnotation.SlightAdvantageBlack:
+						return MovementFigureModel.AnnotationType.SlightAdvantageBlack;
+					case MoveAnnotation.AdvantageWhite:
+						return MovementFigureModel.AnnotationType.AdvantageWhite;
+					case MoveAnnotation.AdvantageBlack:
+						return MovementFigureModel.AnnotationType.AdvantageBlack;
+					case MoveAnnotation.DecisiveAdvantageWhite:
+						return MovementFigureModel.AnnotationType.DecisiveAdvantageWhite;
+					case MoveAnnotation.DecisiveAdvantageBlack:
+						return MovementFigureModel.AnnotationType.DecisiveAdvantageBlack;
+					case MoveAnnotation.Space:
+						return MovementFigureModel.AnnotationType.Space;
+					case MoveAnnotation.Initiative:
+						return MovementFigureModel.AnnotationType.Initiative;
+					case MoveAnnotation.Development:
+						return MovementFigureModel.AnnotationType.Development;
+					case MoveAnnotation.Counterplay:
+						return MovementFigureModel.AnnotationType.Counterplay;
+					case MoveAnnotation.Countering:
+						return MovementFigureModel.AnnotationType.Countering;
+					case MoveAnnotation.Idea:
+						return MovementFigureModel.AnnotationType.Idea;
+					case MoveAnnotation.TheoreticalNovelty:
+						return MovementFigureModel.AnnotationType.TheoreticalNovelty;
+					default:
+						return MovementFigureModel.AnnotationType.UnknownAnnotation;
+				}
 		}
 	}
 }

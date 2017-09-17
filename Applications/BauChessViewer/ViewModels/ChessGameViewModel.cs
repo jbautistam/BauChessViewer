@@ -16,6 +16,7 @@ namespace BauChessViewer.ViewModels
 		private const string SubPathPiecess = @"Data\Graphics\Pieces";
 		// Eventos públicos
 		public event EventHandler ResetGame;
+		public event EventHandler ShowNextMovement;
 		// Variables privadas
 		private GameViewModel _selectedGame;
 		private PathComboImagesViewModel _comboPathBoard, _comboPathPieces;
@@ -80,12 +81,12 @@ namespace BauChessViewer.ViewModels
 			Games.Clear();
 			// Carga los juegos
 			foreach (GameModel game in chessGame.Games)
-				Games.Add(new GameViewModel(game));
+				Games.Add(new GameViewModel(this, game));
 			// Selecciona un elemento
 			if (Games.Count > 0)
 				SelectedGame = Games[0];
 			else
-				SelectedGame = new GameViewModel(new GameModel());
+				SelectedGame = new GameViewModel(this, new GameModel());
 		}
 
 		/// <summary>
@@ -94,7 +95,23 @@ namespace BauChessViewer.ViewModels
 		private void UpdateSelectedGame()
 		{
 			SelectedGame?.GameBoard.Reset();
+			RaiseEventReset();
+		}
+
+		/// <summary>
+		///		lanza el evento de reset
+		/// </summary>
+		internal void RaiseEventReset()
+		{
 			ResetGame?.Invoke(this, EventArgs.Empty);
+		}
+
+		/// <summary>
+		///		lanza el evento de siguiente movimiento
+		/// </summary>
+		internal void RaiseEventNextMovement()
+		{
+			ShowNextMovement?.Invoke(this, EventArgs.Empty);
 		}
 
 		/// <summary>

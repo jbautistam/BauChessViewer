@@ -14,18 +14,21 @@ namespace BauChessViewer.ViewModels
 		private MovementFigureModel _blackMovement, _whiteMovement;
 		private PieceBaseModel.PieceType _piece;
 		private PieceBaseModel.PieceColor _color;
-		private string _whiteMovementText, _blackMovementText, _time;
+		private int _movementIndex;
+		private string _movementNumber, _whiteMovementText, _blackMovementText, _time;
 		private SolidColorBrush _foregroud;
 
-		public MovementFigureViewModel(MovementFigureModel movement)
+		public MovementFigureViewModel(MovementFigureModel movement, int movementIndex)
 		{
 			// Inicializa las propiedades
 			Piece = movement.OriginPiece;
 			Color = movement.Color;
+			MovementIndex = movementIndex;
 			if (Color == PieceBaseModel.PieceColor.White)
 			{
 				WhiteMovement = movement;
 				WhiteMovementText = movement.Text;
+				MovementNumber = $"{movementIndex / 2 + 1}. ";
 			}
 			else
 			{
@@ -67,6 +70,24 @@ namespace BauChessViewer.ViewModels
 		{ 
 			get { return _whiteMovement; }
 			set { CheckProperty(ref _whiteMovement, value); }
+		}
+
+		/// <summary>
+		///		Número de movimiento
+		/// </summary>
+		public int MovementIndex
+		{
+			get { return _movementIndex; }
+			set { CheckProperty(ref _movementIndex, value); }
+		}
+
+		/// <summary>
+		///		Texto con el número de movimiento (sólo para las blancas)
+		/// </summary>
+		public string MovementNumber
+		{
+			get { return _movementNumber; }
+			set { CheckProperty(ref _movementNumber, value); }
 		}
 
 		/// <summary>

@@ -15,9 +15,10 @@ namespace BauChessViewer.ViewModels
 		private string _date;
 		private GameBoardViewModel _gameBoard;
 
-		public GameViewModel(GameModel game)
+		public GameViewModel(ChessGameViewModel chessGameViewModel, GameModel game)
 		{
 			// Asigna el juego
+			TopViewModel = chessGameViewModel;
 			Game = game;
 			GameBoard = new GameBoardViewModel(this);
 			// Carga los datos
@@ -37,12 +38,9 @@ namespace BauChessViewer.ViewModels
 		}
 
 		/// <summary>
-		///		Inicializa el tablero
+		///		ViewModel principal
 		/// </summary>
-		internal void Init()
-		{
-			GameBoard.Reset();
-		}
+		public ChessGameViewModel TopViewModel { get; }
 
 		/// <summary>
 		///		Juego

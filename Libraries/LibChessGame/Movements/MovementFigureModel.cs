@@ -1,4 +1,5 @@
 ﻿using System;
+using ilf.pgn.Data;
 
 namespace Bau.Libraries.LibChessGame.Movements
 {
@@ -22,6 +23,39 @@ namespace Bau.Libraries.LibChessGame.Movements
 			CastleKingSide,
 			/// <summary>Enroque largo</summary>
 			CastleQueenSide
+		}
+
+		/// <summary>
+		///		Anotaciones del movimiento
+		/// </summary>
+		public enum AnnotationType
+		{
+			MindBlowing,
+			Brilliant,
+			Good,
+			Interesting,
+			Dubious,
+			Mistake,
+			Blunder,
+			Abysmal,
+			FascinatingButUnsound,
+			Unclear,
+			WithCompensation,
+			EvenPosition,
+			SlightAdvantageWhite,
+			SlightAdvantageBlack,
+			AdvantageWhite,
+			AdvantageBlack,
+			DecisiveAdvantageWhite,
+			DecisiveAdvantageBlack,
+			Space,
+			Initiative,
+			Development,
+			Counterplay,
+			Countering,
+			Idea,
+			TheoreticalNovelty,
+			UnknownAnnotation
 		}
 
 		/// <summary>
@@ -50,9 +84,29 @@ namespace Bau.Libraries.LibChessGame.Movements
 		public Pieces.PieceBaseModel.PieceType? PromotedPiece { get; internal set; }
 
 		/// <summary>
+		///		Jaque
+		/// </summary>
+		public bool IsCheck { get; internal set; }
+
+		/// <summary>
+		///		Jaque doble
+		/// </summary>
+		public bool IsDoubleCheck { get; internal set; }
+
+		/// <summary>
+		///		Jaque mate
+		/// </summary>
+		public bool IsCheckMate { get; internal set; }
+
+		/// <summary>
 		///		Comentarios
 		/// </summary>
 		public string Remarks { get; internal set; }
+
+		/// <summary>
+		///		Anotación del movimiento
+		/// </summary>
+		public AnnotationType? Annotation { get; set; }
 
 		/// <summary>
 		///		Acciones

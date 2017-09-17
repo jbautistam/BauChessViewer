@@ -73,9 +73,9 @@ namespace BauChessViewer.Views.Controls
 		public void Init(ChessGameViewModel chessGameViewModel)
 		{
 			ViewModel = chessGameViewModel;
-			ViewModel.ResetGame += (sender, eventArgs) => Reset();
 			ViewModel.ComboPathBoard.PropertyChanged += ComboPathImages_PropertyChanged;
 			ViewModel.ComboPathPieces.PropertyChanged += ComboPathImages_PropertyChanged;
+			ViewModel.ResetGame += (sender, eventArgs) => Reset();
 		}
 
 		/// <summary>
@@ -297,37 +297,40 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		internal void ShowMovement(MovementFigureViewModel movement, bool backMovement)
 		{
-			// Recorre las acciones del movimiento
-			if (!backMovement)
-				foreach (ActionBaseModel action in movement.Movement.Actions)
-					switch (action)
-					{
-						case ActionMoveModel move:
-								MovePiece(move);
-							break;
-						case ActionCaptureModel move:
-								CapturePiece(move);
-							break;
-						case ActionPromoteModel move:
-								PromotePiece(move);
-							break;
-					}
-			else
-				for (int index = movement.Movement.Actions.Count - 1; index >= 0; index--)
-					switch (movement.Movement.Actions[index])
-					{
-						case ActionMoveModel move:
-								UndoMovePiece(move);
-							break;
-						case ActionCaptureModel move:
-								UndoCapturePiece(move);
-							break;
-						case ActionPromoteModel move:
-								UndoPromotePiece(move);
-							break;
-					}
-			// Muestra las imágenes
-			ShowImages();
+			if (movement != null)
+			{
+				// Recorre las acciones del movimiento hacia delante o hacia atrás
+				if (!backMovement)
+					foreach (ActionBaseModel action in movement.Movement.Actions)
+						switch (action)
+						{
+							case ActionMoveModel move:
+									MovePiece(move);
+								break;
+							case ActionCaptureModel move:
+									CapturePiece(move);
+								break;
+							case ActionPromoteModel move:
+									PromotePiece(move);
+								break;
+						}
+				else
+					for (int index = movement.Movement.Actions.Count - 1; index >= 0; index--)
+						switch (movement.Movement.Actions[index])
+						{
+							case ActionMoveModel move:
+									UndoMovePiece(move);
+								break;
+							case ActionCaptureModel move:
+									UndoCapturePiece(move);
+								break;
+							case ActionPromoteModel move:
+									UndoPromotePiece(move);
+								break;
+						}
+				// Muestra las imágenes
+				ShowImages();
+			}
 		}
 
 		/// <summary>
