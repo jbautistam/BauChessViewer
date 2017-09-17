@@ -2,7 +2,7 @@
 
 using Bau.Libraries.LibChessGame.Movements;
 
-namespace BauChessViewer.ViewModels
+namespace BauChessViewer.ViewModels.Movements
 {
 	/// <summary>
 	///		ViewModel para el resultado de un movimiento

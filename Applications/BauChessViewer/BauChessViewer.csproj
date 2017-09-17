@@ -56,15 +56,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\FileIconConverter.cs" />
-    <Compile Include="ViewModels\BaseMovementViewModel.cs" />
+    <Compile Include="ViewModels\Movements\BaseMovementViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
-    <Compile Include="ViewModels\MovementGameEndViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementGameEndViewModel.cs" />
     <Compile Include="ViewModels\PathComboImagesViewModel.cs" />
     <Compile Include="ViewModels\ChessGameViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
-    <Compile Include="ViewModels\MovementFigureViewModel.cs" />
-    <Compile Include="ViewModels\MovementRemarkViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementFigureViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementRemarkViewModel.cs" />
     <Compile Include="Views\Controls\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
     </Compile>

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows.Media;
+
 using Bau.Libraries.LibChessGame.Movements;
 using Bau.Libraries.LibChessGame.Pieces;
 
-namespace BauChessViewer.ViewModels
+namespace BauChessViewer.ViewModels.Movements
 {
 	/// <summary>
 	///		ViewModel del movimiento de una figura

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Input;
 
 namespace BauChessViewer
 {
@@ -28,6 +27,11 @@ namespace BauChessViewer
 			// Carga el archivo inicial
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.Game))
 				LoadGame(Properties.Settings.Default.Game);
+			// Inicia los directorios de imágenes
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.PathBoardImages))
+				ChessGameViewModel.ComboPathBoard.SelectedPath = Properties.Settings.Default.PathBoardImages;
+			if (!string.IsNullOrEmpty(Properties.Settings.Default.PathPieceImages))
+				ChessGameViewModel.ComboPathPieces.SelectedPath = Properties.Settings.Default.PathPieceImages;
 		}
 
 		/// <summary>
@@ -81,7 +85,7 @@ namespace BauChessViewer
 		{
 			if (ChessGameViewModel.ChessGame != null)
 			{
-				ViewModels.MovementFigureViewModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
+				ViewModels.Movements.MovementFigureViewModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
 
 					if (movement != null)
 					{
@@ -90,6 +94,16 @@ namespace BauChessViewer
 						udtBoard.ShowMovement(movement, back);
 					}
 			}
+		}
+
+		/// <summary>
+		///		Graba la configuración
+		/// </summary>
+		private void SaveConfiguration()
+		{
+			Properties.Settings.Default.PathBoardImages = ChessGameViewModel.ComboPathBoard.SelectedPath;
+			Properties.Settings.Default.PathPieceImages = ChessGameViewModel.ComboPathPieces.SelectedPath;
+			Properties.Settings.Default.Save();
 		}
 
 		/// <summary>
@@ -128,6 +142,11 @@ namespace BauChessViewer
 		private void cboGame_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			ClearMovementPanel();
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			SaveConfiguration();
 		}
 	}
 }

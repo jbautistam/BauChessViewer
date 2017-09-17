@@ -34,5 +34,29 @@ namespace BauChessViewer.Properties {
                 this["Game"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathBoardImages {
+            get {
+                return ((string)(this["PathBoardImages"]));
+            }
+            set {
+                this["PathBoardImages"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PathPieceImages {
+            get {
+                return ((string)(this["PathPieceImages"]));
+            }
+            set {
+                this["PathPieceImages"] = value;
+            }
+        }
     }
 }

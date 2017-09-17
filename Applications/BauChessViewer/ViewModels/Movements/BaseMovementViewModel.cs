@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BauChessViewer.ViewModels
+namespace BauChessViewer.ViewModels.Movements
 {
 	/// <summary>
 	///		Clase base para los viewmodel de los movimientos

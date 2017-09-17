@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using Bau.Libraries.LibChessGame.Board;
 using Bau.Libraries.LibChessGame.Movements;
 using Bau.Libraries.LibChessGame.Pieces;
-
 using BauChessViewer.ViewModels;
+using BauChessViewer.ViewModels.Movements;
 
 namespace BauChessViewer.Views.Controls
 {

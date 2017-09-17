@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 
 using Bau.Libraries.LibChessGame.Board;
 using Bau.Libraries.LibChessGame.Movements;
+using BauChessViewer.ViewModels.Movements;
 
 namespace BauChessViewer.ViewModels
 {
@@ -122,17 +123,8 @@ namespace BauChessViewer.ViewModels
 			Reset();
 			// Busca el movimiento
 			while (_actualMovement >= 0 && _actualMovement < FigureMovements.Count &&
-				   FigureMovements[_actualMovement].MovementIndex != movement.MovementIndex)
+				   FigureMovements[_actualMovement].MovementIndex <= movement.MovementIndex)
 				Game.TopViewModel.RaiseEventNextMovement();
-			if (FigureMovements[_actualMovement].MovementIndex == movement.MovementIndex)
-				Game.TopViewModel.RaiseEventNextMovement();
-			// Selecciona el movimiento
-			//if (_actualMovement >= 0 && _actualMovement < FigureMovements.Count)
-			//{
-			//	_isMoving = true;
-			//	SelectedMovement = FigureMovements[_actualMovement];
-			//	_isMoving = false;
-			//}
 		}
 
 		/// <summary>
