@@ -44,6 +44,7 @@ namespace BauChessViewer.ViewModels
 		{
 			// Limpia los movimientos
 			Movements.Clear();
+			FigureMovements.Clear();
 			// Carga los movimientos
 			if (game != null)
 			{
@@ -123,7 +124,8 @@ namespace BauChessViewer.ViewModels
 			while (_actualMovement >= 0 && _actualMovement < FigureMovements.Count &&
 				   FigureMovements[_actualMovement].MovementIndex != movement.MovementIndex)
 				Game.TopViewModel.RaiseEventNextMovement();
-			Game.TopViewModel.RaiseEventNextMovement();
+			if (FigureMovements[_actualMovement].MovementIndex == movement.MovementIndex)
+				Game.TopViewModel.RaiseEventNextMovement();
 			// Selecciona el movimiento
 			//if (_actualMovement >= 0 && _actualMovement < FigureMovements.Count)
 			//{
