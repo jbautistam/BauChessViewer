@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using Bau.Libraries.LibChessGame.Movements;
+using Bau.Libraries.LibChessGame.Games;
 
 namespace BauChessViewer.ViewModels.AdditionalInfo
 {
@@ -26,10 +26,34 @@ namespace BauChessViewer.ViewModels.AdditionalInfo
 			Items.Clear();
 			// Añade la información adicional
 			foreach (KeyValuePair<string, string> info in game.AdditionalInfo)
-				Items.Add(new AdditionalInfoViewModel(info.Key, info.Value));
+				Add(info.Key, info.Value);
 			// Añade las etiquetas
 			foreach (KeyValuePair<string, string> tag in game.Tags)
-				Items.Add(new AdditionalInfoViewModel(tag.Key, tag.Value));
+				Add(tag.Key, tag.Value);
+				
+		}
+
+		/// <summary>
+		///		Añade un elemento
+		/// </summary>
+		private void Add(string header, string text)
+		{
+			if (!Exists(header, text))
+				Items.Add(new AdditionalInfoViewModel(header, text));
+		}
+
+		/// <summary>
+		///		Comprueba si existe un elemento en la lista
+		/// </summary>
+		private bool Exists(string header, string text)
+		{
+			// Busca el elemento en la lista
+			if (!string.IsNullOrWhiteSpace(header))
+				foreach (AdditionalInfoViewModel item in Items)
+					if (header.Equals(item.Header, StringComparison.CurrentCultureIgnoreCase))
+						return true;
+			// Si ha llegado hasta aquí es porque no ha encontrado nada
+			return false;
 		}
 
 		/// <summary>

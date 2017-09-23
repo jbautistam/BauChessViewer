@@ -1,6 +1,7 @@
 ﻿using System;
 
-using Bau.Libraries.LibChessGame.Movements;
+using Bau.Libraries.LibChessGame.Board.Movements;
+using Bau.Libraries.LibChessGame.Games;
 
 namespace BauChessViewer.ViewModels.Movements
 {

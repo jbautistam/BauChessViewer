@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Games
 {
 	/// <summary>
 	///		Colección de <see cref="GameModel"/>

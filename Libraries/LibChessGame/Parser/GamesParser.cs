@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 using ilf.pgn;
 using ilf.pgn.Data;
-using Bau.Libraries.LibChessGame.Movements;
-using Bau.Libraries.LibChessGame.Pieces;
+using Bau.Libraries.LibChessGame.Board.Movements;
+using Bau.Libraries.LibChessGame.Board.Pieces;
+using Bau.Libraries.LibChessGame.Games;
 
 namespace Bau.Libraries.LibChessGame.Parser
 {

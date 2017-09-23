@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Games
 {
 	/// <summary>
 	///		Clase con los datos de un juego
@@ -86,7 +86,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Movimientos
 		/// </summary>
-		public MovementModelCollection Movements { get; } = new MovementModelCollection();
+		public Board.Movements.MovementModelCollection Movements { get; } = new Board.Movements.MovementModelCollection();
 
 		/// <summary>
 		///		Error de interpretación

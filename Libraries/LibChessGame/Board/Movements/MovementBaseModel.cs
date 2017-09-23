@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Base para los movimientos

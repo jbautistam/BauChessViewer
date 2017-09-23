@@ -1,7 +1,6 @@
 ﻿using System;
-using Bau.Libraries.LibChessGame.Board;
 
-namespace Bau.Libraries.LibChessGame.Pieces
+namespace Bau.Libraries.LibChessGame.Board.Pieces
 {
 	/// <summary>
 	///		Clase base con los datos de una pieza

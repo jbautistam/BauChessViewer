@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Pieces
+namespace Bau.Libraries.LibChessGame.Board.Pieces
 {
 	/// <summary>
 	///		Peón

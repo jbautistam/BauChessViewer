@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Clase con los datos del resultado final de un juego
 	/// </summary>
 	public class MovementGameEndModel : MovementBaseModel
 	{
-		public MovementGameEndModel(GameModel.ResultType result)
+		public MovementGameEndModel(Games.GameModel.ResultType result)
 		{
 			Result = result;
 		}
@@ -15,6 +15,6 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Resultado del juego
 		/// </summary>
-		public GameModel.ResultType Result { get; }
+		public Games.GameModel.ResultType Result { get; }
 	}
 }

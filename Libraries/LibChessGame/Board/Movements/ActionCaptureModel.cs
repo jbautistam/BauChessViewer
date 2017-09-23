@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Acción para eliminar una pieza
@@ -8,7 +8,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 	public class ActionCaptureModel : ActionBaseModel
 	{
 		public ActionCaptureModel(Pieces.PieceBaseModel.PieceType type, Pieces.PieceBaseModel.PieceColor color,
-								  Board.CellModel from) : base(type, color)
+								  CellModel from) : base(type, color)
 		{
 			From = from;
 		}
@@ -16,6 +16,6 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Celda en la que se encuentra la pieza a eliminar
 		/// </summary>
-		public Board.CellModel From { get; }
+		public CellModel From { get; }
 	}
 }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 using Bau.Libraries.LibChessGame.Board;
-using Bau.Libraries.LibChessGame.Movements;
+using Bau.Libraries.LibChessGame.Board.Movements;
+using Bau.Libraries.LibChessGame.Games;
 using BauChessViewer.ViewModels.Movements;
 
 namespace BauChessViewer.ViewModels

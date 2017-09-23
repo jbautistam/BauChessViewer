@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Movimiento de una pieza
@@ -8,7 +8,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 	public class ActionMoveModel : ActionBaseModel
 	{
 		public ActionMoveModel(Pieces.PieceBaseModel.PieceType type, Pieces.PieceBaseModel.PieceColor color,
-							   Board.CellModel from, Board.CellModel to) : base(type, color)
+							   CellModel from, CellModel to) : base(type, color)
 		{
 			From = from;
 			To = to;
@@ -17,11 +17,11 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Celda origen
 		/// </summary>
-		public Board.CellModel From { get; }
+		public CellModel From { get; }
 
 		/// <summary>
 		///		Celda destino
 		/// </summary>
-		public Board.CellModel To { get; }
+		public CellModel To { get; }
 	}
 }

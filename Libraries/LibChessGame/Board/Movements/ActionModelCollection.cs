@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Bau.Libraries.LibChessGame.Board;
-using Bau.Libraries.LibChessGame.Pieces;
+using Bau.Libraries.LibChessGame.Board.Pieces;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Colección de <see cref="ActionBaseModel"/>

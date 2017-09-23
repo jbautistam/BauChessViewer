@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 
 using Bau.Libraries.LibChessGame;
-using Bau.Libraries.LibChessGame.Movements;
+using Bau.Libraries.LibChessGame.Games;
 
 namespace BauChessViewer.ViewModels
 {

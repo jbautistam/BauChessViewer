@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Media;
 
-using Bau.Libraries.LibChessGame.Movements;
-using Bau.Libraries.LibChessGame.Pieces;
+using Bau.Libraries.LibChessGame.Board.Movements;
+using Bau.Libraries.LibChessGame.Board.Pieces;
 
 namespace BauChessViewer.ViewModels.Movements
 {

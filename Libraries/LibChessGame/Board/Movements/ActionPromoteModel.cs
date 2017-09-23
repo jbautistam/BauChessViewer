@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board.Movements
 {
 	/// <summary>
 	///		Acción de promocionar una pieza
@@ -8,7 +8,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 	public class ActionPromoteModel : ActionBaseModel
 	{
 		public ActionPromoteModel(Pieces.PieceBaseModel.PieceType type, Pieces.PieceBaseModel.PieceColor color,
-								  Board.CellModel to) : base(type, color)
+								  CellModel to) : base(type, color)
 		{
 			To = to;
 		}
@@ -16,6 +16,6 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Lugar donde se coloca la pieza promocionada
 		/// </summary>
-		public Board.CellModel To { get; }
+		public CellModel To { get; }
 	}
 }

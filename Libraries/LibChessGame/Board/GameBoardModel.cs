@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Bau.Libraries.LibChessGame.Movements;
-using Bau.Libraries.LibChessGame.Pieces;
+using Bau.Libraries.LibChessGame.Board.Movements;
+using Bau.Libraries.LibChessGame.Board.Pieces;
+using Bau.Libraries.LibChessGame.Games;
 
 namespace Bau.Libraries.LibChessGame.Board
 {
@@ -10,7 +11,7 @@ namespace Bau.Libraries.LibChessGame.Board
 	///		Modelo con los datos de un tablero
 	/// </summary>
 	/// <remarks>
-	///		El tablero tiene esta estructura ( -> Blanca, X -> Negra)
+	///		El tablero tiene esta estructura ( -> Celda blanca, X -> Celda negra)
 	///		       01234567
 	///		       --------
 	///			8 | X X X X| 0

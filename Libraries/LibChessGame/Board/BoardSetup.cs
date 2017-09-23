@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Bau.Libraries.LibChessGame.Pieces;
+using Bau.Libraries.LibChessGame.Board.Pieces;
 
 namespace Bau.Libraries.LibChessGame.Board
 {
