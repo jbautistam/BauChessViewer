@@ -62,28 +62,43 @@
 						SelectionChanged="lstMovements_SelectionChanged" >
 					<ListBox.Resources>
 						<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementFigureViewModel}">
+						<DataTemplate DataType="{x:Type viewModels:MovementFigureDoubleViewModel}">
 							<Grid HorizontalAlignment="Stretch">
 								<Grid.RowDefinitions>
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" 
+										Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
 										FontSize="25" FontWeight="Bold" />
-								<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="0,0,2,0"
-												   Source="{Binding Path=WhiteMovement,Converter={StaticResource FileIconConverter}}" />
-								<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=WhiteMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-										FontSize="25" FontWeight="Bold" />
-								<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Margin="0,0,2,0"
-												   Source="{Binding Path=BlackMovement,Converter={StaticResource FileIconConverter}}" />
-								<TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding Path=BlackMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-										FontSize="25" FontWeight="Bold" />
+								<Button Grid.Row="0" Grid.Column="1" BorderThickness="0" Background="{Binding Path=WhiteMovement.Background}" 
+										Command="{Binding Path=WhiteMovement.SelectMovementCommand}" >
+									<Button.Content>
+										<StackPanel Orientation="Horizontal">
+											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
+													Source="{Binding Path=WhiteMovement.Movement,Converter={StaticResource FileIconConverter}}" />
+											<TextBlock Text="{Binding Path=WhiteMovement.Text}" 
+													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=WhiteMovement.Foreground}" 
+													FontSize="25" FontWeight="Bold" />
+										</StackPanel>
+									</Button.Content>
+								</Button>
+								<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="{Binding Path=BlackMovement.Background}" 
+										Command="{Binding Path=BlackMovement.SelectMovementCommand}" >
+									<Button.Content>
+										<StackPanel Orientation="Horizontal">
+											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
+													Source="{Binding Path=BlackMovement.Movement,Converter={StaticResource FileIconConverter}}" />
+											<TextBlock Text="{Binding Path=BlackMovement.Text}" 
+													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=BlackMovement.Foreground}" 
+													FontSize="25" FontWeight="Bold" />
+										</StackPanel>
+									</Button.Content>
+								</Button>
 							</Grid>
 						</DataTemplate>
 						<!-- Plantilla de datos para el tipo para MovementRemarkViewModel -->
@@ -110,69 +125,12 @@
 									</DataTemplate>
 								</GridViewColumn.CellTemplate>
 							</GridViewColumn>
-							<GridViewColumn DisplayMemberBinding= "{Binding Path=Text}" Header="Texto" Width="100"/>
+							<GridViewColumn DisplayMemberBinding= "{Binding Path=Text}" Header="Texto" Width="200"/>
 						</GridView>
 					</ListView.View>
 				</ListView>
 			</TabItem>
-			<TabItem Header="Movimientos doble">
-				<ListBox ItemsSource="{Binding Path=SelectedGame.GameBoard.MovementsDouble}" SelectedItem="{Binding Path=SelectedGame.GameBoard.SelectedDoubleMovement}" 
-						HorizontalContentAlignment="Stretch" 
-						SelectionChanged="lstMovements_SelectionChanged" >
-					<ListBox.Resources>
-						<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementFigureDoubleViewModel}">
-							<Grid HorizontalAlignment="Stretch">
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="*" />
-								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" 
-										Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-										FontSize="25" FontWeight="Bold" />
-								<Button Grid.Row="0" Grid.Column="1" BorderThickness="0" Background="White" Command="{Binding Path=WhiteMovement.SelectMovement}" >
-									<Button.Content>
-										<StackPanel Orientation="Horizontal">
-											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
-													Source="{Binding Path=WhiteMovement.WhiteMovement,Converter={StaticResource FileIconConverter}}" />
-											<TextBlock Text="{Binding Path=WhiteMovement.WhiteMovementText}" 
-													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-													FontSize="25" FontWeight="Bold" />
-										</StackPanel>
-									</Button.Content>
-								</Button>
-								<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="White" Command="{Binding Path=WhiteMovement.SelectMovement}" >
-									<Button.Content>
-										<StackPanel Orientation="Horizontal">
-											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
-													Source="{Binding Path=BlackMovement.BlackMovement,Converter={StaticResource FileIconConverter}}" />
-											<TextBlock Text="{Binding Path=BlackMovement.BlackMovementText}" 
-													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-													FontSize="25" FontWeight="Bold" />
-										</StackPanel>
-									</Button.Content>
-								</Button>
-							</Grid>
-						</DataTemplate>
-						<!-- Plantilla de datos para el tipo para MovementRemarkViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementRemarkViewModel}">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="12" />
-							</StackPanel>
-						</DataTemplate>
-						<!-- Plantilla de datos para el tipo para MovementGameEndViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementGameEndViewModel}">
-							<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-						</DataTemplate>
-					</ListBox.Resources>
-				</ListBox>
-			</TabItem>
 		</TabControl>
-
 		<Border Grid.Row="2" Grid.Column="0" Background="#FF9AC9D1" Margin="2" BorderBrush="Black" BorderThickness="1">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
 				<Image x:Name="imgMovement" Width="32" Height="32" Margin="0,0,10,0" />

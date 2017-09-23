@@ -15,7 +15,7 @@ namespace BauChessViewer.ViewModels
 	public class GameBoardViewModel : BaseViewModel
 	{
 		// Variables privadas
-		private BaseMovementViewModel _selectedMovement, _selectedDoubleMovement;
+		private BaseMovementViewModel _selectedMovement;
 		private int _actualMovement;
 		private bool _isMoving = false;
 
@@ -46,7 +46,6 @@ namespace BauChessViewer.ViewModels
 		{
 			// Limpia los movimientos
 			Movements.Clear();
-			MovementsDouble.Clear();
 			FigureMovements.Clear();
 			// Carga los movimientos
 			if (game != null)
@@ -58,38 +57,35 @@ namespace BauChessViewer.ViewModels
 						switch (movement)
 						{
 							case MovementFigureModel move:
-									MovementFigureViewModel movementFigure = new MovementFigureViewModel(move, moveIndex);
+									MovementFigureViewModel movementFigure = new MovementFigureViewModel(this, move, moveIndex);
 
 										// Añade el movimiento tanto a la lista de movimientos general (con comentarios)
 										// como a la lista de movimientos de piezas (sin comentarios)
-										Movements.Add(movementFigure);
 										FigureMovements.Add(move);
 										// Añade el movimiento al movimiento de figuras doble
 										if (lastMovement == null)
 										{
+											// Crea el
 											lastMovement = new MovementFigureDoubleViewModel(moveIndex);
-											MovementsDouble.Add(lastMovement);
+											Movements.Add(lastMovement);
 										}
 										// Asigna el movimiento de blancas / negras
 										if (move.Color == Bau.Libraries.LibChessGame.Board.Pieces.PieceBaseModel.PieceColor.White)
 											lastMovement.WhiteMovement = movementFigure;
-										else
-										{
-											// Asigna el movimiento de negras
+										else // Asigna el movimiento de negras
+										{	
 											lastMovement.BlackMovement = movementFigure;
 											lastMovement = null;
-											// Incrementa el índice de movimientos
-											moveIndex++;
 										}
+										// Incrementa el índice de movimientos
+										moveIndex++;
 								break;
 							case MovementRemarksModel move:
 									Movements.Add(new MovementRemarkViewModel(move));
-									MovementsDouble.Add(new MovementRemarkViewModel(move));
 									lastMovement = null;
 								break;
 							case MovementGameEndModel move:
 									Movements.Add(new MovementGameEndViewModel(move));
-									MovementsDouble.Add(new MovementGameEndViewModel(move));
 									lastMovement = null;
 								break;
 						}
@@ -128,6 +124,7 @@ namespace BauChessViewer.ViewModels
 					// Indica que ha comenzado a mover
 					_isMoving = true;
 					// Marca el movimiento seleccionado
+					SelectMovement(_actualMovement);
 					//SelectedMovement = movement;
 					// Indica que se ha dejado de mover
 					_isMoving = false;
@@ -143,10 +140,46 @@ namespace BauChessViewer.ViewModels
 		{
 			// Limpia el tablero
 			Reset();
-			//// Busca el movimiento
-			//while (_actualMovement >= 0 && _actualMovement < FigureMovements.Count &&
-			//	   FigureMovements.IndexOf(FigureMovements([_actualMovement]) <= movement.MovementIndex)
-			//	Game.TopViewModel.RaiseEventNextMovement();
+			// Busca el movimiento
+			while (_actualMovement >= 0 && _actualMovement < FigureMovements.Count &&
+				   _actualMovement < movement.MovementIndex)
+				Game.TopViewModel.RaiseEventNextMovement();
+		}
+
+		/// <summary>
+		///		Reorre los movimientos hasta encontrar el buscado
+		/// </summary>
+		internal void MoveTo(MovementFigureViewModel movementFigureViewModel)
+		{
+			GoToMovement(movementFigureViewModel);
+			SelectMovement(movementFigureViewModel.MovementIndex);
+		}
+
+		/// <summary>
+		///		Selecciona el movimiento y deselecciona los demás
+		/// </summary>
+		private void SelectMovement(int index)
+		{
+			foreach (BaseMovementViewModel baseMovement in Movements)
+			{
+				MovementFigureDoubleViewModel movement = baseMovement as MovementFigureDoubleViewModel;
+
+					if (movement != null)
+					{
+						if (movement.WhiteMovement != null)
+						{
+							movement.WhiteMovement.Selected = movement.WhiteMovement.MovementIndex == index;
+							if (movement.WhiteMovement.Selected)
+								SelectedMovement = movement;
+						}
+						if (movement.BlackMovement != null)
+						{
+							movement.BlackMovement.Selected = movement.BlackMovement.MovementIndex == index;
+							if (movement.BlackMovement.Selected)
+								SelectedMovement = movement;
+						}
+					}		
+			}
 		}
 
 		/// <summary>
@@ -175,25 +208,7 @@ namespace BauChessViewer.ViewModels
 		public BaseMovementViewModel SelectedMovement
 		{
 			get { return _selectedMovement; }
-			set 
-			{ 
-				if (CheckObject(ref _selectedMovement, value) && !_isMoving && value is MovementFigureViewModel)
-					GoToMovement(value as MovementFigureViewModel);
-			}
-		}
-
-		/// <summary>
-		///		Movimientos para mostrar en la vista: combina movimientos con comentarios y resultados
-		/// </summary>
-		public ObservableCollection<BaseMovementViewModel> MovementsDouble { get; } = new ObservableCollection<BaseMovementViewModel>();
-
-		/// <summary>
-		///		Movimiento seleccionado
-		/// </summary>
-		public BaseMovementViewModel SelectedDoubleMovement
-		{
-			get { return _selectedDoubleMovement; }
-			set { CheckObject(ref _selectedDoubleMovement, value); }
+			set { CheckObject(ref _selectedMovement, value); }
 		}	
 	}
 }

@@ -12,34 +12,30 @@ namespace BauChessViewer.ViewModels.Movements
 	public class MovementFigureViewModel : BaseMovementViewModel
 	{
 		// Variables privadas
-		private MovementFigureModel _blackMovement, _whiteMovement;
+		private MovementFigureModel _movement;
 		private PieceBaseModel.PieceType _piece;
 		private PieceBaseModel.PieceColor _color;
 		private int _movementIndex;
-		private string _movementNumber, _whiteMovementText, _blackMovementText, _time;
-		private SolidColorBrush _foregroud;
+		private string _text, _time;
+		private bool _selected;
+		private SolidColorBrush _foreGround;
+		private SolidColorBrush _backGround;
 
-		public MovementFigureViewModel(MovementFigureModel movement, int movementIndex)
+		public MovementFigureViewModel(GameBoardViewModel gameBoard, MovementFigureModel movement, int movementIndex)
 		{
 			// Inicializa las propiedades
+			GameBoard = gameBoard;
+			Selected = false;
 			Piece = movement.OriginPiece;
 			Color = movement.Color;
 			MovementIndex = movementIndex;
-			if (Color == PieceBaseModel.PieceColor.White)
-			{
-				WhiteMovement = movement;
-				WhiteMovementText = movement.Text;
-				MovementNumber = $"{movementIndex / 2 + 1}. ";
-			}
-			else
-			{
-				BlackMovement = movement;
-				BlackMovementText = movement.Text;
-			}
+			Movement = movement;
+			Text = movement.Text;
 			Time = "01:07";
 			// Inicializa los objetos adicionales
 			Foreground = new SolidColorBrush(Colors.Black);
-			SelectMovement = new BaseCommand(parameter => ExecuteMovement());
+			Background = new SolidColorBrush(Colors.White);
+			SelectMovementCommand = new BaseCommand(parameter => ExecuteMovement(), parameter => CanExecuteMovement());
 		}
 
 		/// <summary>
@@ -47,39 +43,54 @@ namespace BauChessViewer.ViewModels.Movements
 		/// </summary>
 		private void ExecuteMovement()
 		{
-			System.Diagnostics.Debug.WriteLine("Ejecutar el movimiento");
+			Selected = true;
+			GameBoard.MoveTo(this);
 		}
+
+		/// <summary>
+		///		Indica si puede ejecutar el movimiento
+		/// </summary>
+		private bool CanExecuteMovement()
+		{
+			return Movement != null;
+		}
+
+		/// <summary>
+		///		Tablero de juego
+		/// </summary>
+		private GameBoardViewModel GameBoard { get; }
 
 		/// <summary>
 		///		Movimiento
 		/// </summary>
 		public MovementFigureModel Movement 
 		{ 
-			get 
+			get { return _movement; }
+			set { CheckProperty(ref _movement, value); }
+		}
+
+		/// <summary>
+		///		Indica si el movimiento está seleccionado
+		/// </summary>
+		public bool Selected
+		{
+			get { return _selected; }
+			set 
 			{ 
-				if (BlackMovement == null)
-					return _whiteMovement; 
-				else
-					return _blackMovement;
+				if (CheckProperty(ref _selected, value))
+				{
+					if (value)
+					{
+						Foreground = new SolidColorBrush(Colors.White);
+						Background = new SolidColorBrush(Colors.Blue);
+					}
+					else
+					{
+						Foreground = new SolidColorBrush(Colors.Black);
+						Background = new SolidColorBrush(Colors.White);
+					}
+				}
 			}
-		}
-
-		/// <summary>
-		///		Movimiento
-		/// </summary>
-		public MovementFigureModel BlackMovement 
-		{ 
-			get { return _blackMovement; }
-			set { CheckProperty(ref _blackMovement, value); }
-		}
-
-		/// <summary>
-		///		Movimiento
-		/// </summary>
-		public MovementFigureModel WhiteMovement 
-		{ 
-			get { return _whiteMovement; }
-			set { CheckProperty(ref _whiteMovement, value); }
 		}
 
 		/// <summary>
@@ -89,15 +100,6 @@ namespace BauChessViewer.ViewModels.Movements
 		{
 			get { return _movementIndex; }
 			set { CheckProperty(ref _movementIndex, value); }
-		}
-
-		/// <summary>
-		///		Texto con el número de movimiento (sólo para las blancas)
-		/// </summary>
-		public string MovementNumber
-		{
-			get { return _movementNumber; }
-			set { CheckProperty(ref _movementNumber, value); }
 		}
 
 		/// <summary>
@@ -119,21 +121,12 @@ namespace BauChessViewer.ViewModels.Movements
 		}
 
 		/// <summary>
-		///		Texto del movimiento blanco
+		///		Texto del movimiento
 		/// </summary>
-		public string WhiteMovementText
+		public string Text
 		{
-			get { return _whiteMovementText; }
-			set { CheckProperty(ref _whiteMovementText, value); }
-		}
-
-		/// <summary>
-		///		Texto del movimiento negro
-		/// </summary>
-		public string BlackMovementText
-		{
-			get { return _blackMovementText; }
-			set { CheckProperty(ref _blackMovementText, value); }
+			get { return _text; }
+			set { CheckProperty(ref _text, value); }
 		}
 
 		/// <summary>
@@ -150,13 +143,22 @@ namespace BauChessViewer.ViewModels.Movements
 		/// </summary>
 		public SolidColorBrush Foreground
 		{ 
-			get { return _foregroud; }
-			set { CheckObject(ref _foregroud, value); }
+			get { return _foreGround; }
+			set { CheckObject(ref _foreGround, value); }
+		}
+
+		/// <summary>
+		///		Color de fondo
+		/// </summary>
+		public SolidColorBrush Background
+		{ 
+			get { return _backGround; }
+			set { CheckObject(ref _backGround, value); }
 		}
 
 		/// <summary>
 		///		Comando para selección del movimiento
 		/// </summary>
-		public BaseCommand SelectMovement { get; }
+		public BaseCommand SelectMovementCommand { get; }
 	}
 }

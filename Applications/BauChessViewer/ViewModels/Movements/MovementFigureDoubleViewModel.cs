@@ -16,7 +16,7 @@ namespace BauChessViewer.ViewModels.Movements
 
 		public MovementFigureDoubleViewModel(int movementIndex)
 		{
-			MovementIndex = movementIndex;
+			MovementIndex = movementIndex % 2 + 1;
 			MovementNumber = $"{movementIndex}. ";
 			Foreground = Brushes.Black;
 		}
