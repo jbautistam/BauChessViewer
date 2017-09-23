@@ -7,7 +7,7 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 	/// </summary>
 	public class KnightModel : PieceBaseModel
 	{
-		public KnightModel(Board.GameBoardModel board, PieceColor color, Board.CellModel cell) : base(board, color, cell) {}
+		public KnightModel(PieceColor color, Board.CellModel cell) : base(color, cell) {}
 
 		/// <summary>
 		///		Comprueba si la pieza se puede mover a una fila / columna

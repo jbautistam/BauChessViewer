@@ -7,12 +7,12 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 	/// </summary>
 	public class PawnModel : PieceBaseModel
 	{
-		public PawnModel(Board.GameBoardModel board, PieceColor color, Board.CellModel cell) : base(board, color, cell) {}
+		public PawnModel(PieceColor color, CellModel cell) : base(color, cell) {}
 
 		/// <summary>
 		///		Comprueba si la pieza se puede mover a una fila / columna
 		/// </summary>
-		public override bool CanMoveTo(Board.GameBoardModel board, Board.CellModel target, Movements.MovementFigureModel.MovementType type)
+		public override bool CanMoveTo(GameBoardModel board, CellModel target, Movements.MovementFigureModel.MovementType type)
 		{
 			int rowDiference = Cell.Row - target.Row;
 			int columnDiference = Cell.Column - target.Column;
@@ -34,7 +34,7 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 							else if (Math.Abs(rowDiference) == 1)
 							{
 								if (columnDiference == 0)
-									can = board.IsEmpty(target);
+									can = board.Pieces.IsEmpty(target);
 								else
 									can = type == Movements.MovementFigureModel.MovementType.Capture && board.CanCapture(this, target);
 							}

@@ -15,7 +15,7 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// <summary>
 		///		Configuración inicial del tablero
 		/// </summary>
-		public BoardSetup Setup { get; } = new BoardSetup();
+		public BoardSetup Setup { get; internal set; } = new BoardSetup();
 
 		/// <summary>
 		///		Tablero

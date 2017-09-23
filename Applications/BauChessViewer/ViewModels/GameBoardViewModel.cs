@@ -16,7 +16,8 @@ namespace BauChessViewer.ViewModels
 	{
 		// Variables privadas
 		private BaseMovementViewModel _selectedMovement;
-		private int _actualMovement;
+		private MovementFigureViewModel _actualMovement;
+		private int _actualMovementIndex;
 
 		public GameBoardViewModel(GameViewModel game)
 		{
@@ -34,7 +35,7 @@ namespace BauChessViewer.ViewModels
 			// Recoge los movimientos (sólo los de figuras)
 			LoadMovements(Game.Game);
 			// Inicializa el movimiento actual
-			_actualMovement = 0;
+			_actualMovementIndex = 0;
 			// Lanza el evento para inicializar el tablero
 			Game.TopViewModel.RaiseEventReset();
 		}
@@ -103,20 +104,20 @@ namespace BauChessViewer.ViewModels
 				// Obtiene el movimiento
 				if (back)
 				{
-					if (_actualMovement > 0)
-						movement = FigureMovements[--_actualMovement];
+					if (_actualMovementIndex > 0)
+						movement = FigureMovements[--_actualMovementIndex];
 				}
 				else
 				{
-					if (_actualMovement < FigureMovements.Count)
+					if (_actualMovementIndex < FigureMovements.Count)
 					{
-						movement = FigureMovements[_actualMovement];
-						_actualMovement++;
+						movement = FigureMovements[_actualMovementIndex];
+						_actualMovementIndex++;
 					}
 				}
 				// Selecciona el movimiento
 				if (movement != null)
-					SelectMovement(_actualMovement);
+					SelectMovement(_actualMovementIndex);
 				// Devuelve el movimiento
 				return movement;
 		}
@@ -129,8 +130,8 @@ namespace BauChessViewer.ViewModels
 			// Limpia el tablero
 			Reset();
 			// Busca el movimiento
-			while (_actualMovement >= 0 && _actualMovement < FigureMovements.Count &&
-				   _actualMovement < movement.MovementIndex)
+			while (_actualMovementIndex >= 0 && _actualMovementIndex < FigureMovements.Count &&
+				   _actualMovementIndex < movement.MovementIndex)
 				Game.TopViewModel.RaiseEventNextMovement();
 		}
 
@@ -158,13 +159,19 @@ namespace BauChessViewer.ViewModels
 						{
 							movement.WhiteMovement.Selected = movement.WhiteMovement.MovementIndex == index;
 							if (movement.WhiteMovement.Selected)
+							{
 								SelectedMovement = movement;
+								ActualMovement = movement.WhiteMovement;
+							}
 						}
 						if (movement.BlackMovement != null)
 						{
 							movement.BlackMovement.Selected = movement.BlackMovement.MovementIndex == index;
 							if (movement.BlackMovement.Selected)
+							{
 								SelectedMovement = movement;
+								ActualMovement = movement.BlackMovement;
+							}
 						}
 					}		
 			}
@@ -198,5 +205,14 @@ namespace BauChessViewer.ViewModels
 			get { return _selectedMovement; }
 			set { CheckObject(ref _selectedMovement, value); }
 		}	
+
+		/// <summary>
+		///		Movimiento actual
+		/// </summary>
+		public MovementFigureViewModel ActualMovement
+		{
+			get { return _actualMovement; }
+			set { CheckObject(ref _actualMovement, value); }
+		}
 	}
 }

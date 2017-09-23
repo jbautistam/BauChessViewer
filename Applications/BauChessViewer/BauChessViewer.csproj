@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\FileIconConverter.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoListViewModel.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoViewModel.cs" />

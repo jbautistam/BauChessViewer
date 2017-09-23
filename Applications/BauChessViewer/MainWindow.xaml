@@ -70,7 +70,9 @@
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
 									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" 
 										Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
@@ -78,7 +80,7 @@
 								<Button Grid.Row="0" Grid.Column="1" BorderThickness="0" Background="{Binding Path=WhiteMovement.Background}" 
 										Command="{Binding Path=WhiteMovement.SelectMovementCommand}" >
 									<Button.Content>
-										<StackPanel Orientation="Horizontal">
+										<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
 													Source="{Binding Path=WhiteMovement.Movement,Converter={StaticResource FileIconConverter}}" />
 											<TextBlock Text="{Binding Path=WhiteMovement.Text}" 
@@ -87,7 +89,13 @@
 										</StackPanel>
 									</Button.Content>
 								</Button>
-								<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="{Binding Path=BlackMovement.Background}" 
+								<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="White"
+										Visibility="{Binding Path=WhiteMovement.HasVariation,Converter={StaticResource BoolToVisibilityConverter}}" >
+									<Button.Content>
+											<Image Width="16" Height="16" Source="Resources/Images/ArrowNext.png" />
+									</Button.Content>
+								</Button>
+								<Button Grid.Row="0" Grid.Column="3" BorderThickness="0" Background="{Binding Path=BlackMovement.Background}" 
 										Command="{Binding Path=BlackMovement.SelectMovementCommand}" >
 									<Button.Content>
 										<StackPanel Orientation="Horizontal">
@@ -97,6 +105,12 @@
 													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=BlackMovement.Foreground}" 
 													FontSize="25" FontWeight="Bold" />
 										</StackPanel>
+									</Button.Content>
+								</Button>
+								<Button Grid.Row="0" Grid.Column="4" BorderThickness="0" Background="White"
+										Visibility="{Binding Path=BlackMovement.HasVariation,Converter={StaticResource BoolToVisibilityConverter}}" >
+									<Button.Content>
+										<Image Width="16" Height="16" Source="Resources/Images/ArrowNext.png" />
 									</Button.Content>
 								</Button>
 							</Grid>

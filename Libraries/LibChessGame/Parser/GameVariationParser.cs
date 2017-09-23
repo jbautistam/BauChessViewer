@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using ilf.pgn.Data;
-using Bau.Libraries.LibChessGame.Games;
 using Bau.Libraries.LibChessGame.Board.Pieces;
 
 namespace Bau.Libraries.LibChessGame.Parser
@@ -62,9 +60,9 @@ namespace Bau.Libraries.LibChessGame.Parser
 		/// <summary>
 		///		Interpreta las piezas del tablero
 		/// </summary>
-		private List<PieceBaseModel> ParseBoardPieces(string boardPieces)
+		private PieceBaseModelCollection ParseBoardPieces(string boardPieces)
 		{
-			List<PieceBaseModel> pieces = new List<PieceBaseModel>();
+			PieceBaseModelCollection pieces = new PieceBaseModelCollection();
 			int row = 7;
 
 				// Carga las piezas
@@ -90,22 +88,22 @@ namespace Bau.Libraries.LibChessGame.Parser
 													switch (piece.ToUpper())
 													{
 														case "P":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.Pawn, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.Pawn, GetColor(piece), row, column);
 															break;
 														case "R":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.Rook, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.Rook, GetColor(piece), row, column);
 															break;
 														case "N":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.Knight, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.Knight, GetColor(piece), row, column);
 															break;
 														case "B":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.Bishop, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.Bishop, GetColor(piece), row, column);
 															break;
 														case "K":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.King, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.King, GetColor(piece), row, column);
 															break;
 														case "Q":
-																pieces.Add(CreatePiece(PieceBaseModel.PieceType.Queen, GetColor(piece), row, column));
+																pieces.Add(PieceBaseModel.PieceType.Queen, GetColor(piece), row, column);
 															break;
 													}
 										}
@@ -127,30 +125,6 @@ namespace Bau.Libraries.LibChessGame.Parser
 				return PieceBaseModel.PieceColor.White;
 			else
 				return PieceBaseModel.PieceColor.Black;
-		}
-
-		/// <summary>
-		///		Crea una pieza
-		/// </summary>
-		private PieceBaseModel CreatePiece(PieceBaseModel.PieceType type, PieceBaseModel.PieceColor color, int row, int column)
-		{
-			switch (type)
-			{
-				case PieceBaseModel.PieceType.Pawn:
-					return new PawnModel(null, color, new Board.CellModel(row, column));
-				case PieceBaseModel.PieceType.Rook:
-					return new RookModel(null, color, new Board.CellModel(row, column));
-				case PieceBaseModel.PieceType.Knight:
-					return new KnightModel(null, color, new Board.CellModel(row, column));
-				case PieceBaseModel.PieceType.Bishop:
-					return new BishopModel(null, color, new Board.CellModel(row, column));
-				case PieceBaseModel.PieceType.Queen:
-					return new QueenModel(null, color, new Board.CellModel(row, column));
-				case PieceBaseModel.PieceType.King:
-					return new KingModel(null, color, new Board.CellModel(row, column));
-				default:
-					return null;
-			}
 		}
 	}
 }

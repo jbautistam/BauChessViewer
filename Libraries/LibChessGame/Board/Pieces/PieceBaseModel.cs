@@ -39,9 +39,8 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 			Black
 		}
 
-		public PieceBaseModel(GameBoardModel board, PieceColor color, CellModel cell)
+		public PieceBaseModel(PieceColor color, CellModel cell)
 		{
-			Board = board;
 			Color = color;
 			Cell = cell;
 			IsMoved = false;
@@ -57,7 +56,7 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 		/// </summary>
 		internal bool IsLegal(GameBoardModel board, CellModel target, Movements.MovementFigureModel.MovementType type)
 		{
-			PieceBaseModel piece = board.GetPiece(target);	
+			PieceBaseModel piece = board.Pieces.GetPiece(target);	
 
 				return piece == null || (type == Movements.MovementFigureModel.MovementType.Capture && piece != null && piece.Color != Color);
 		}
@@ -94,11 +93,6 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 		{
 			return !onlyOneCell || (onlyOneCell && Math.Max(rowDiference, columnDifference) == 1);
 		}
-
-		/// <summary>
-		///		Tablero donde está la pieza
-		/// </summary>
-		public GameBoardModel Board { get; }
 
 		/// <summary>
 		///		Color de la pieza

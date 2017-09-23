@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+
 using Bau.Libraries.LibChessGame.Board.Movements;
 
 namespace BauChessViewer
@@ -88,10 +89,14 @@ namespace BauChessViewer
 			{
 				MovementFigureModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
 
-					if (movement != null)
+					// Limpia el panel
+					ClearMovementPanel();
+					// Obtiene el siguiente movimiento
+					if (ChessGameViewModel.SelectedGame.GameBoard.ActualMovement != null)
 					{
-						lblMovement.Text = movement.Text;
-						imgMovement.Source = udtBoard.LoadImage(movement.Color, movement.OriginPiece);
+						lblMovement.Text = ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Text;
+						imgMovement.Source = udtBoard.LoadImage(ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Color, 
+																ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Piece);
 						udtBoard.ShowMovement(movement, back);
 					}
 			}

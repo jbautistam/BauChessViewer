@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Board\CellModel.cs" />
     <Compile Include="Board\GameBoardModel.cs" />
+    <Compile Include="Board\Pieces\PieceBaseModelCollection.cs" />
     <Compile Include="Board\VariationModel.cs" />
     <Compile Include="ChessGameModel.cs" />
     <Compile Include="Exceptions\GameReaderException.cs" />

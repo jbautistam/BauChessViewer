@@ -8,7 +8,6 @@ using Bau.Libraries.LibChessGame.Board;
 using Bau.Libraries.LibChessGame.Board.Movements;
 using Bau.Libraries.LibChessGame.Board.Pieces;
 using BauChessViewer.ViewModels;
-using BauChessViewer.ViewModels.Movements;
 
 namespace BauChessViewer.Views.Controls
 {

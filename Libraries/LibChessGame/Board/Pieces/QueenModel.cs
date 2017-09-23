@@ -7,12 +7,12 @@ namespace Bau.Libraries.LibChessGame.Board.Pieces
 	/// </summary>
 	public class QueenModel : PieceBaseModel
 	{
-		public QueenModel(GameBoardModel board, PieceColor color, CellModel cell) : base(board, color, cell) {}
+		public QueenModel(PieceColor color, CellModel cell) : base(color, cell) {}
 
 		/// <summary>
 		///		Comprueba si la pieza se puede mover a una fila / columna
 		/// </summary>
-		public override bool CanMoveTo(Board.GameBoardModel board, Board.CellModel target, Movements.MovementFigureModel.MovementType type)
+		public override bool CanMoveTo(GameBoardModel board, CellModel target, Movements.MovementFigureModel.MovementType type)
 		{
 			// Comprueba si es un movimiento horizontal / diagonal
 			if (IsVerticalHorizontalMovement(target, false) || IsDiagonalMovement(target, false))

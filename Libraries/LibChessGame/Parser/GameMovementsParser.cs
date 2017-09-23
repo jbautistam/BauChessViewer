@@ -1,6 +1,8 @@
 ﻿using System;
 
 using ilf.pgn.Data;
+using ilf.pgn.Data.MoveText;
+
 using Bau.Libraries.LibChessGame.Board;
 using Bau.Libraries.LibChessGame.Board.Movements;
 using Bau.Libraries.LibChessGame.Board.Pieces;
@@ -18,46 +20,70 @@ namespace Bau.Libraries.LibChessGame.Parser
 		/// </summary>
 		internal MovementModelCollection Parse(VariationModel variation, Game game)
 		{
+			return ParseMovements(variation, game.MoveText);
+		}
+
+		/// <summary>
+		///		Interpreta los movimientos
+		/// </summary>
+		private MovementModelCollection ParseMovements(VariationModel variation, MoveTextEntryList moveEntryList)
+		{
 			MovementModelCollection movements = new MovementModelCollection();
 			PieceBaseModel.PieceColor actualColor = PieceBaseModel.PieceColor.White;
+			PieceBaseModelCollection previousPieces = new PieceBaseModelCollection();
 
 				// Inicializa el tablero
 				variation.GameBoard.Reset();
 				// Cambia el color inicial
 				if (variation.Setup.HasSetup && !variation.Setup.IsWhiteMove)
 					actualColor = PieceBaseModel.PieceColor.Black;
-				// Carga los movimientos
-				foreach (MoveTextEntry move in game.MoveText)
-					switch (move)
-					{
-						case RAVEntry rav:
-								System.Diagnostics.Debug.WriteLine(move.GetType().ToString());
-							break;
-						case NAGEntry nag:
-								System.Diagnostics.Debug.WriteLine(move.GetType().ToString());
-							break;
-						case CommentEntry comment:
-								movements.Add(new MovementRemarksModel(comment.Comment));
-							break;
-						case MovePairEntry movement:
-								// Añade el movimiento de blancas
-								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as MovePairEntry).White));
-								actualColor = GetNextColor(actualColor);
-								// Añade el movimiento de negras
-								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as MovePairEntry).Black));
-								actualColor = GetNextColor(actualColor);
-							break;
-						case HalfMoveEntry movement:
-								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as HalfMoveEntry).Move));
-								actualColor = GetNextColor(actualColor);
-							break;
-						case GameEndEntry movement:
-								movements.Add(new MovementGameEndModel(ConvertResult(movement.Result)));
-							break;
-						default:
-								System.Diagnostics.Debug.WriteLine(move.GetType().ToString());
-							break;
-					}
+				// Interpreta la lista de movimientos
+				try
+				{
+					foreach (MoveTextEntry moveEntry in moveEntryList)
+						switch (moveEntry)
+						{
+							case RAVEntry rav:
+									MovementFigureModel lastMovement = movements.SearchLastPieceMovement();
+
+										if (lastMovement != null)
+											lastMovement.Variation = CreateVariation(actualColor, previousPieces, rav);
+								break;
+							case NAGEntry nag:
+									System.Diagnostics.Debug.WriteLine(moveEntry.GetType().ToString());
+								break;
+							case CommentEntry comment:
+									movements.Add(new MovementRemarksModel(comment.Comment));
+								break;
+							case MovePairEntry movement:
+									// Añade el movimiento de blancas
+									movements.Add(ParseMovement(variation.GameBoard, actualColor, (moveEntry as MovePairEntry).White));
+									actualColor = GetNextColor(actualColor);
+									// Clona la lista de piezas hasta el movimiento anterior
+									previousPieces = variation.GameBoard.Pieces.Clone();
+									// Añade el movimiento de negras
+									movements.Add(ParseMovement(variation.GameBoard, actualColor, (moveEntry as MovePairEntry).Black));
+									actualColor = GetNextColor(actualColor);
+								break;
+							case HalfMoveEntry movement:
+									// Clona la lista de piezas hasta el movimiento anterior
+									previousPieces = variation.GameBoard.Pieces.Clone();
+									// Añade el movimiento actual
+									movements.Add(ParseMovement(variation.GameBoard, actualColor, (moveEntry as HalfMoveEntry).Move));
+									actualColor = GetNextColor(actualColor);
+								break;
+							case GameEndEntry movement:
+									movements.Add(new MovementGameEndModel(ConvertResult(movement.Result)));
+								break;
+							default:
+									System.Diagnostics.Debug.WriteLine(moveEntry.GetType().ToString());
+								break;
+						}
+				}
+				catch (Exception exception)
+				{
+					variation.ParseError = exception.Message;
+				}
 				// Devuelve la colección de movimientos
 				return movements;
 		}
@@ -244,6 +270,38 @@ namespace Bau.Libraries.LibChessGame.Parser
 					default:
 						return MovementFigureModel.AnnotationType.UnknownAnnotation;
 				}
+		}
+
+		/// <summary>
+		///		Crea una variación
+		/// </summary>
+		private VariationModel CreateVariation(PieceBaseModel.PieceColor actualColor, PieceBaseModelCollection previousPieces, RAVEntry rav)
+		{
+			VariationModel variation = new VariationModel();
+
+				// Asigna las piezas
+				variation.Setup = CreateBoardSetup(actualColor, previousPieces);
+				// Interpreta la lista de movimiento
+				variation.Movements.AddRange(ParseMovements(variation, rav.MoveText));
+				// Devuelve la variación
+				return variation;
+		}
+
+		/// <summary>
+		///		Crea la configuración del tablero
+		/// </summary>
+		private Board.BoardSetup CreateBoardSetup(PieceBaseModel.PieceColor actualColor, PieceBaseModelCollection previousPieces)
+		{
+			Board.BoardSetup setup = new Board.BoardSetup();
+
+				// Indica si es un movimiento de blancas
+				//? Se salta el color (una variación es sobre el mismo movimiento, por tanto hay que volver al color anterior)
+				//? ... es decir, si acaban de mover las negras, el primer movimiento de la variación también es de negras
+				setup.IsWhiteMove = actualColor != PieceBaseModel.PieceColor.White;
+				// Copia las piezas
+				setup.Pieces.AddRange(previousPieces);
+				// Devuelve la configuración
+				return setup;
 		}
 	}
 }

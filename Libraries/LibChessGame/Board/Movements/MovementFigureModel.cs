@@ -111,5 +111,10 @@ namespace Bau.Libraries.LibChessGame.Board.Movements
 		///		Acciones
 		/// </summary>
 		public ActionModelCollection Actions { get; } = new ActionModelCollection();
+
+		/// <summary>
+		///		Variación asociada al movimiento
+		/// </summary>
+		public VariationModel Variation { get; internal set; }
 	}
 }

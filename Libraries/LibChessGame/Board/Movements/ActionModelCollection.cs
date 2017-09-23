@@ -79,7 +79,7 @@ namespace Bau.Libraries.LibChessGame.Board.Movements
 		/// </summary>
 		private void CreateCaptureAction(GameBoardModel board, PieceBaseModel.PieceType? piece, PieceBaseModel.PieceColor color, CellModel from)
 		{
-			PieceBaseModel targetPiece = board.GetPiece(from);
+			PieceBaseModel targetPiece = board.Pieces.GetPiece(from);
 
 				//? En ocasiones la pieza leída no es la real del tablero, por eso buscamos la pieza adecuada
 				// Añade la pieza

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Bau.Libraries.LibChessGame.Board.Pieces;
 
@@ -61,6 +60,6 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// <summary>
 		///		Posición de las piezas
 		/// </summary>
-		public List<PieceBaseModel> Pieces { get; } = new List<PieceBaseModel>();
+		public PieceBaseModelCollection Pieces { get; } = new PieceBaseModelCollection();
     }
 }

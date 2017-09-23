@@ -17,7 +17,7 @@ namespace BauChessViewer.ViewModels.Movements
 		private PieceBaseModel.PieceColor _color;
 		private int _movementIndex;
 		private string _text, _time;
-		private bool _selected;
+		private bool _hasVariation, _selected;
 		private SolidColorBrush _foreGround;
 		private SolidColorBrush _backGround;
 
@@ -31,6 +31,7 @@ namespace BauChessViewer.ViewModels.Movements
 			MovementIndex = movementIndex;
 			Movement = movement;
 			Text = movement.Text;
+			HasVariation = movement.Variation != null;
 			Time = "01:07";
 			// Inicializa los objetos adicionales
 			Foreground = new SolidColorBrush(Colors.Black);
@@ -127,6 +128,15 @@ namespace BauChessViewer.ViewModels.Movements
 		{
 			get { return _text; }
 			set { CheckProperty(ref _text, value); }
+		}
+
+		/// <summary>
+		///		Indica si el movimiento tiene una variación
+		/// </summary>
+		public bool HasVariation
+		{
+			get { return _hasVariation; }
+			set { CheckProperty(ref _hasVariation, value); }
 		}
 
 		/// <summary>
