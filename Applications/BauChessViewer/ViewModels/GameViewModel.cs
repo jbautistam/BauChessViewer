@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
 using Bau.Libraries.LibChessGame.Movements;
 
@@ -13,6 +12,7 @@ namespace BauChessViewer.ViewModels
 		// Variables privadas
 		private string _event, _round, _site, _whitePlayer, _blackPlayer, _title;
 		private string _date;
+		private AdditionalInfo.AdditionalInfoListViewModel _informationList;
 		private GameBoardViewModel _gameBoard;
 
 		public GameViewModel(ChessGameViewModel chessGameViewModel, GameModel game)
@@ -35,6 +35,8 @@ namespace BauChessViewer.ViewModels
 			else if (game.Month != null && game.Day != null)
 				Date = $"{game.Month}-{game.Day}";
 			Title = $"{Event}/{Round}: {WhitePlayer} - {BlackPlayer}";
+			// Carga la información adicional
+			InformationList = new AdditionalInfo.AdditionalInfoListViewModel(this);
 		}
 
 		/// <summary>
@@ -108,6 +110,15 @@ namespace BauChessViewer.ViewModels
 		{
 			get { return _title; }
 			set { CheckProperty(ref _title, value); }
+		}
+
+		/// <summary>
+		///		ViewModel de información adicional
+		/// </summary>
+		public AdditionalInfo.AdditionalInfoListViewModel InformationList
+		{
+			get { return _informationList; }
+			set { CheckObject(ref _informationList, value); }
 		}
 
 		/// <summary>

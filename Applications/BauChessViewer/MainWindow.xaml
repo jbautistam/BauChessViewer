@@ -18,11 +18,13 @@
 			<ColumnDefinition Width="3*" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<ToolBarTray DockPanel.Dock="Top">
+		<ToolBarTray Grid.Row="0" Grid.Column="0">
 			<ToolBar Cursor="" IsHitTestVisible="True">
+				<TextBlock Text="{Binding Path=FileName}" Margin="2" FontWeight="Bold" />
 				<Button ToolTip="Abrir" Click="cmdOpenFile_Click">
 					<Image Source="Resources/Images/Folder.png" />
 				</Button>
+				<Separator/>
 				<Button ToolTip="Anterior" Click="cmdPreviousMovement_Click">
 					<Image Source="Resources/Images/ArrowPrevious.png" />
 				</Button>
@@ -53,47 +55,68 @@
 		<Border Grid.Row="1" Grid.Column="0" Margin="2" Padding="5" BorderBrush="Black" BorderThickness="1" Background="#FF40B9E6">
 			<Controls:ChessBoardView x:Name="udtBoard"/>
 		</Border>
-		<ListBox ItemsSource="{Binding Path=SelectedGame.GameBoard.Movements}" SelectedItem="{Binding Path=SelectedGame.GameBoard.SelectedMovement}" 
-				HorizontalContentAlignment="Stretch" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
-				SelectionChanged="lstMovements_SelectionChanged" >
-			<ListBox.Resources>
-				<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
-				<DataTemplate DataType="{x:Type viewModels:MovementFigureViewModel}">
-					<Grid HorizontalAlignment="Stretch">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-								FontSize="25" FontWeight="Bold" />
-						<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="0,0,2,0"
-									       Source="{Binding Path=WhiteMovement,Converter={StaticResource FileIconConverter}}" />
-						<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=WhiteMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-								FontSize="25" FontWeight="Bold" />
-						<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Margin="0,0,2,0"
-									       Source="{Binding Path=BlackMovement,Converter={StaticResource FileIconConverter}}" />
-						<TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding Path=BlackMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-								FontSize="25" FontWeight="Bold" />
-					</Grid>
-				</DataTemplate>
-				<!-- Plantilla de datos para el tipo para MovementRemarkViewModel -->
-				<DataTemplate DataType="{x:Type viewModels:MovementRemarkViewModel}">
-					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="12" />
-					</StackPanel>
-				</DataTemplate>
-				<!-- Plantilla de datos para el tipo para MovementGameEndViewModel -->
-				<DataTemplate DataType="{x:Type viewModels:MovementGameEndViewModel}">
-					<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-				</DataTemplate>
-			</ListBox.Resources>
-		</ListBox>
+		<TabControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+			<TabItem Header="Movimientos">
+				<ListBox ItemsSource="{Binding Path=SelectedGame.GameBoard.Movements}" SelectedItem="{Binding Path=SelectedGame.GameBoard.SelectedMovement}" 
+						HorizontalContentAlignment="Stretch" 
+						SelectionChanged="lstMovements_SelectionChanged" >
+					<ListBox.Resources>
+						<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
+						<DataTemplate DataType="{x:Type viewModels:MovementFigureViewModel}">
+							<Grid HorizontalAlignment="Stretch">
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
+										FontSize="25" FontWeight="Bold" />
+								<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="0,0,2,0"
+												   Source="{Binding Path=WhiteMovement,Converter={StaticResource FileIconConverter}}" />
+								<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=WhiteMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
+										FontSize="25" FontWeight="Bold" />
+								<Image Width="32" Height="32" VerticalAlignment="Center" Grid.Row="0" Grid.Column="3" Margin="0,0,2,0"
+												   Source="{Binding Path=BlackMovement,Converter={StaticResource FileIconConverter}}" />
+								<TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding Path=BlackMovementText}" Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
+										FontSize="25" FontWeight="Bold" />
+							</Grid>
+						</DataTemplate>
+						<!-- Plantilla de datos para el tipo para MovementRemarkViewModel -->
+						<DataTemplate DataType="{x:Type viewModels:MovementRemarkViewModel}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="12" />
+							</StackPanel>
+						</DataTemplate>
+						<!-- Plantilla de datos para el tipo para MovementGameEndViewModel -->
+						<DataTemplate DataType="{x:Type viewModels:MovementGameEndViewModel}">
+							<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+						</DataTemplate>
+					</ListBox.Resources>
+				</ListBox>
+			</TabItem>
+			<TabItem Header="Información">
+				<ListView ItemsSource="{Binding Path=SelectedGame.InformationList.Items}" Foreground="Black">
+					<ListView.View>
+						<GridView AllowsColumnReorder="False">
+							<GridViewColumn Header="Título" Width="100">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<TextBlock Text= "{Binding Path=Header}" FontWeight="Bold" />
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
+							<GridViewColumn DisplayMemberBinding= "{Binding Path=Text}" Header="Texto" Width="100"/>
+						</GridView>
+					</ListView.View>
+				</ListView>
+			</TabItem>
+		</TabControl>
+
 		<Border Grid.Row="2" Grid.Column="0" Background="#FF9AC9D1" Margin="2" BorderBrush="Black" BorderThickness="1">
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
 				<Image x:Name="imgMovement" Width="32" Height="32" Margin="0,0,10,0" />

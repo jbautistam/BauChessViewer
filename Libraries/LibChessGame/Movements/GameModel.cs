@@ -51,7 +51,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Estado inicial del tablero
 		/// </summary>
-		public BoardSetup Board { get; } = new BoardSetup();
+		public Board.BoardSetup Board { get; } = new Board.BoardSetup();
 
 		/// <summary>
 		///		Resultado

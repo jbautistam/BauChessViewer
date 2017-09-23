@@ -18,6 +18,7 @@ namespace BauChessViewer.ViewModels
 		public event EventHandler ResetGame;
 		public event EventHandler ShowNextMovement;
 		// Variables privadas
+		private string _fileName;
 		private GameViewModel _selectedGame;
 		private PathComboImagesViewModel _comboPathBoard, _comboPathPieces;
 
@@ -56,10 +57,8 @@ namespace BauChessViewer.ViewModels
 					ChessGame.Load(fileName);
 					// y lo muestra
 					Load(ChessGame);
-					//lstMovements.Init(ChessGame);
-					// Guarda el nombre de archivo en la configuración
-					Properties.Settings.Default.Game = fileName;
-					Properties.Settings.Default.Save();
+					// Asigna el nombre de archivo
+					FileName = System.IO.Path.GetFileName(fileName);
 				}
 				catch (Exception exception)
 				{
@@ -118,6 +117,15 @@ namespace BauChessViewer.ViewModels
 		///		Datos del archivo
 		/// </summary>
 		public ChessGameModel ChessGame { get; private set; }
+
+		/// <summary>
+		///		Nombre del archivo abierto
+		/// </summary>
+		public string FileName
+		{
+			get { return _fileName; }
+			set { CheckProperty(ref _fileName, value); }
+		}
 
 		/// <summary>
 		///		Juegos

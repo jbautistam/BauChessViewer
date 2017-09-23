@@ -50,7 +50,7 @@
     <Compile Include="Movements\ActionModelCollection.cs" />
     <Compile Include="Movements\ActionMoveModel.cs" />
     <Compile Include="Movements\ActionPromoteModel.cs" />
-    <Compile Include="Movements\BoardSetup.cs" />
+    <Compile Include="Board\BoardSetup.cs" />
     <Compile Include="Movements\GameModel.cs" />
     <Compile Include="Movements\GameModelCollection.cs" />
     <Compile Include="Movements\MovementBaseModel.cs" />

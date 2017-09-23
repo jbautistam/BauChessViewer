@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Bau.Libraries.LibChessGame.Pieces;
 
-namespace Bau.Libraries.LibChessGame.Movements
+namespace Bau.Libraries.LibChessGame.Board
 {
     /// <summary>
     ///		Configuración del tablero, se utiliza cuando la partida no está completa si no que se ha creado a partir de una posición inicial
