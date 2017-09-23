@@ -17,7 +17,6 @@ namespace BauChessViewer.ViewModels
 		// Variables privadas
 		private BaseMovementViewModel _selectedMovement;
 		private int _actualMovement;
-		private bool _isMoving = false;
 
 		public GameBoardViewModel(GameViewModel game)
 		{
@@ -117,18 +116,8 @@ namespace BauChessViewer.ViewModels
 					}
 				}
 				// Selecciona el movimiento
-				//? IsMoving = true y IsMoving = false debe estar dentro de este if para que 'SelectedMovement = x' no
-				//? haga una llamada recursiva
 				if (movement != null)
-				{
-					// Indica que ha comenzado a mover
-					_isMoving = true;
-					// Marca el movimiento seleccionado
 					SelectMovement(_actualMovement);
-					//SelectedMovement = movement;
-					// Indica que se ha dejado de mover
-					_isMoving = false;
-				}
 				// Devuelve el movimiento
 				return movement;
 		}
