@@ -8,8 +8,18 @@ namespace Bau.Libraries.LibChessGame.Board
 	public class VariationModel
 	{	
 		/// <summary>
-		///		Configuración del tablero
+		///		Configuración inicial del tablero
 		/// </summary>
-		public BoardSetup Board { get; } = new BoardSetup();
+		public BoardSetup Setup { get; } = new BoardSetup();
+
+		/// <summary>
+		///		Tablero
+		/// </summary>
+		public GameBoardModel GameBoard { get; } = new GameBoardModel();
+
+		/// <summary>
+		///		Movimientos
+		/// </summary>
+		public Movements.MovementModelCollection Movements { get; } = new Movements.MovementModelCollection();
 	}
 }

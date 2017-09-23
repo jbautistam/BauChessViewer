@@ -39,6 +39,15 @@ namespace BauChessViewer.ViewModels.Movements
 			Time = "01:07";
 			// Inicializa los objetos adicionales
 			Foreground = new SolidColorBrush(Colors.Black);
+			SelectMovement = new BaseCommand(parameter => ExecuteMovement());
+		}
+
+		/// <summary>
+		///		Ejecuta un movimiento
+		/// </summary>
+		private void ExecuteMovement()
+		{
+			System.Diagnostics.Debug.WriteLine("Ejecutar el movimiento");
 		}
 
 		/// <summary>
@@ -144,5 +153,10 @@ namespace BauChessViewer.ViewModels.Movements
 			get { return _foregroud; }
 			set { CheckObject(ref _foregroud, value); }
 		}
+
+		/// <summary>
+		///		Comando para selección del movimiento
+		/// </summary>
+		public BaseCommand SelectMovement { get; }
 	}
 }

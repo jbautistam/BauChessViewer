@@ -59,7 +59,7 @@ namespace Bau.Libraries.LibChessGame.Parser
 				// Carga los movimientos
 				try
 				{
-					gameParsed.Movements.AddRange(movementsParser.Parse(gameParsed, game));
+					gameParsed.Variation.Movements.AddRange(movementsParser.Parse(gameParsed, game));
 				}
 				catch (Exception exception)
 				{

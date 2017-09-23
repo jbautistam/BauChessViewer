@@ -296,13 +296,13 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		Muestra un movimiento
 		/// </summary>
-		internal void ShowMovement(MovementFigureViewModel movement, bool backMovement)
+		internal void ShowMovement(MovementFigureModel movement, bool backMovement)
 		{
 			if (movement != null)
 			{
 				// Recorre las acciones del movimiento hacia delante o hacia atrás
 				if (!backMovement)
-					foreach (ActionBaseModel action in movement.Movement.Actions)
+					foreach (ActionBaseModel action in movement.Actions)
 						switch (action)
 						{
 							case ActionMoveModel move:
@@ -316,8 +316,8 @@ namespace BauChessViewer.Views.Controls
 								break;
 						}
 				else
-					for (int index = movement.Movement.Actions.Count - 1; index >= 0; index--)
-						switch (movement.Movement.Actions[index])
+					for (int index = movement.Actions.Count - 1; index >= 0; index--)
+						switch (movement.Actions[index])
 						{
 							case ActionMoveModel move:
 									UndoMovePiece(move);

@@ -58,9 +58,11 @@
     <Compile Include="Converters\FileIconConverter.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoListViewModel.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoViewModel.cs" />
+    <Compile Include="ViewModels\BaseCommand.cs" />
     <Compile Include="ViewModels\Movements\BaseMovementViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementFigureDoubleViewModel.cs" />
     <Compile Include="ViewModels\Movements\MovementGameEndViewModel.cs" />
     <Compile Include="ViewModels\PathComboImagesViewModel.cs" />
     <Compile Include="ViewModels\ChessGameViewModel.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Bau.Libraries.LibChessGame.Board.Movements;
 
 namespace BauChessViewer
 {
@@ -85,12 +86,12 @@ namespace BauChessViewer
 		{
 			if (ChessGameViewModel.ChessGame != null)
 			{
-				ViewModels.Movements.MovementFigureViewModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
+				MovementFigureModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
 
 					if (movement != null)
 					{
-						lblMovement.Text = movement.Movement.Text;
-						imgMovement.Source = udtBoard.LoadImage(movement.Color, movement.Piece);
+						lblMovement.Text = movement.Text;
+						imgMovement.Source = udtBoard.LoadImage(movement.Color, movement.OriginPiece);
 						udtBoard.ShowMovement(movement, back);
 					}
 			}

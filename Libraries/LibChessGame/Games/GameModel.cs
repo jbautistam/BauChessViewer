@@ -84,9 +84,9 @@ namespace Bau.Libraries.LibChessGame.Games
 		public List<KeyValuePair<string, string>> Tags { get; } = new List<KeyValuePair<string, string>>();
 
 		/// <summary>
-		///		Movimientos
+		///		Variación / partida
 		/// </summary>
-		public Board.Movements.MovementModelCollection Movements { get; } = new Board.Movements.MovementModelCollection();
+		public Board.VariationModel Variation { get; } = new Board.VariationModel();
 
 		/// <summary>
 		///		Error de interpretación
