@@ -1,5 +1,4 @@
 ﻿using System;
-using ilf.pgn.Data;
 
 namespace Bau.Libraries.LibChessGame.Movements
 {

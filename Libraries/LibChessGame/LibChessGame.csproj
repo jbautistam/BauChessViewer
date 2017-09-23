@@ -58,13 +58,15 @@
     <Compile Include="Movements\MovementModelCollection.cs" />
     <Compile Include="Movements\MovementGameEndModel.cs" />
     <Compile Include="Movements\MovementRemarksModel.cs" />
+    <Compile Include="Parser\GameMovementsParser.cs" />
+    <Compile Include="Parser\GamesParser.cs" />
     <Compile Include="Pieces\BishopModel.cs" />
     <Compile Include="Pieces\KingModel.cs" />
     <Compile Include="Pieces\KnightModel.cs" />
     <Compile Include="Pieces\PawnModel.cs" />
     <Compile Include="Pieces\PieceBaseModel.cs" />
     <Compile Include="Pieces\QueenModel.cs" />
-    <Compile Include="Pieces\RootModel.cs" />
+    <Compile Include="Pieces\RookModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

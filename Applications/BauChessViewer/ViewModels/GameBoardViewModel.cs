@@ -29,7 +29,7 @@ namespace BauChessViewer.ViewModels
 		public void Reset()
 		{
 			// Inicializa el tablero
-			GameBoard.Reset();
+			GameBoard.Reset(Game.Game);
 			// Recoge los movimientos (sólo los de figuras)
 			LoadMovements(Game.Game);
 			// Inicializa el movimiento actual

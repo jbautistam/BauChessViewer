@@ -14,7 +14,8 @@ namespace Bau.Libraries.LibChessGame
 		/// </summary>
 		public void Load(string fileName)
 		{
-			Games.Load(fileName);
+			Games.Clear();
+			Games.AddRange(new Parser.GamesParser().Load(fileName));
 		}
 
 		/// <summary>

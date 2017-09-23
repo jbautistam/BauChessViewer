@@ -10,6 +10,14 @@ namespace Bau.Libraries.LibChessGame.Movements
     /// </summary>
     public class BoardSetup
     {
+		/// <summary>
+		///		Indica si se ha configurado el tablero
+		/// </summary>
+		public bool HasSetup 
+		{ 
+			get { return Pieces.Count > 0; }
+		}
+
         /// <summary>
         ///		Indica si es un movimiento de blancas
         /// </summary>
@@ -38,12 +46,7 @@ namespace Bau.Libraries.LibChessGame.Movements
 		/// <summary>
 		///		Fila del peón que se puede capturar al paso (si hay alguno)
 		/// </summary>
-        public int? EnPassantRow { get; set; }
-
-		/// <summary>
-		///		Columna del peón que se puede capturar al paso (si hay alguno)
-		/// </summary>
-		public int? EnPassantColumn { get; set; }
+        public Board.CellModel EnPassantCell { get; set; }
 
         /// <summary>
 		///		Número de movimientos (por jugador) antes de este movimiento

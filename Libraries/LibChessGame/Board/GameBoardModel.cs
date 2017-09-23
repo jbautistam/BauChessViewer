@@ -106,7 +106,7 @@ namespace Bau.Libraries.LibChessGame.Board
 						AddPiece(new PawnModel(this, color, cell));
 					break;
 				case PieceBaseModel.PieceType.Rook:
-						AddPiece(new RootModel(this, color, cell));
+						AddPiece(new RookModel(this, color, cell));
 					break;
 				case PieceBaseModel.PieceType.Knight:
 						AddPiece(new KnightModel(this, color, cell));
@@ -134,44 +134,51 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// <summary>
 		///		Inicializa el tablero a la posición inicial
 		/// </summary>
-		public void Reset()
+		public void Reset(GameModel game)
 		{
 			// Limpia el tablero
 			Clear();
-			// Añade las piezas blancas
-			AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 0);
-			AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.White, 7, 1);
-			AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.White, 7, 2);
-			AddPiece(PieceBaseModel.PieceType.Queen, PieceBaseModel.PieceColor.White, 7, 3);
-			AddPiece(PieceBaseModel.PieceType.King, PieceBaseModel.PieceColor.White, 7, 4);
-			AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.White, 7, 5);
-			AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.White, 7, 6);
-			AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 7);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 0);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 1);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 2);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 3);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 4);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 5);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 6);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 7);
-			// Añade las piezas negras
-			AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.Black, 0, 0);
-			AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.Black, 0, 1);
-			AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.Black, 0, 2);
-			AddPiece(PieceBaseModel.PieceType.Queen, PieceBaseModel.PieceColor.Black, 0, 3);
-			AddPiece(PieceBaseModel.PieceType.King, PieceBaseModel.PieceColor.Black, 0, 4);
-			AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.Black, 0, 5);
-			AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.Black, 0, 6);
-			AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.Black, 0, 7);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 0);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 1);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 2);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 3);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 4);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 5);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 6);
-			AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 7);
+			// Inicializa el juego
+			if (!game.Board.HasSetup)
+			{
+				// Añade las piezas blancas
+				AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 0);
+				AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.White, 7, 1);
+				AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.White, 7, 2);
+				AddPiece(PieceBaseModel.PieceType.Queen, PieceBaseModel.PieceColor.White, 7, 3);
+				AddPiece(PieceBaseModel.PieceType.King, PieceBaseModel.PieceColor.White, 7, 4);
+				AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.White, 7, 5);
+				AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.White, 7, 6);
+				AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 7);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 0);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 1);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 2);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 3);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 4);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 5);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 6);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.White, 6, 7);
+				// Añade las piezas negras
+				AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.Black, 0, 0);
+				AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.Black, 0, 1);
+				AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.Black, 0, 2);
+				AddPiece(PieceBaseModel.PieceType.Queen, PieceBaseModel.PieceColor.Black, 0, 3);
+				AddPiece(PieceBaseModel.PieceType.King, PieceBaseModel.PieceColor.Black, 0, 4);
+				AddPiece(PieceBaseModel.PieceType.Bishop, PieceBaseModel.PieceColor.Black, 0, 5);
+				AddPiece(PieceBaseModel.PieceType.Knight, PieceBaseModel.PieceColor.Black, 0, 6);
+				AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.Black, 0, 7);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 0);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 1);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 2);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 3);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 4);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 5);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 6);
+				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 7);
+			}
+			else
+				foreach (PieceBaseModel piece in game.Board.Pieces)
+					AddPiece(piece.Type, piece.Color, piece.Cell);
 		}
 
 		/// <summary>

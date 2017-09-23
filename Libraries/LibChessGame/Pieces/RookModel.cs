@@ -5,9 +5,9 @@ namespace Bau.Libraries.LibChessGame.Pieces
 	/// <summary>
 	///		Torre
 	/// </summary>
-	public class RootModel : PieceBaseModel
+	public class RookModel : PieceBaseModel
 	{
-		public RootModel(Board.GameBoardModel board, PieceColor color, Board.CellModel cell) : base(board, color, cell) {}
+		public RookModel(Board.GameBoardModel board, PieceColor color, Board.CellModel cell) : base(board, color, cell) {}
 
 		/// <summary>
 		///		Comprueba si la pieza se puede mover a una fila / columna
