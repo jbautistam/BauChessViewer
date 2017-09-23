@@ -59,8 +59,9 @@
     <Compile Include="Board\Movements\MovementModelCollection.cs" />
     <Compile Include="Board\Movements\MovementGameEndModel.cs" />
     <Compile Include="Board\Movements\MovementRemarksModel.cs" />
+    <Compile Include="Parser\CellConversor.cs" />
     <Compile Include="Parser\GameMovementsParser.cs" />
-    <Compile Include="Parser\GamesParser.cs" />
+    <Compile Include="Parser\GameParser.cs" />
     <Compile Include="Board\Pieces\BishopModel.cs" />
     <Compile Include="Board\Pieces\KingModel.cs" />
     <Compile Include="Board\Pieces\KnightModel.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Board\Pieces\PieceBaseModel.cs" />
     <Compile Include="Board\Pieces\QueenModel.cs" />
     <Compile Include="Board\Pieces\RookModel.cs" />
+    <Compile Include="Parser\GameVariationParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

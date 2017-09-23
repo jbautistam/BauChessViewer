@@ -49,11 +49,6 @@ namespace Bau.Libraries.LibChessGame.Games
 		public string BlackPlayer { get; internal set; }
 
 		/// <summary>
-		///		Estado inicial del tablero
-		/// </summary>
-		public Board.BoardSetup Board { get; } = new Board.BoardSetup();
-
-		/// <summary>
 		///		Resultado
 		/// </summary>
 		public ResultType Result { get; internal set; }
@@ -86,7 +81,7 @@ namespace Bau.Libraries.LibChessGame.Games
 		/// <summary>
 		///		Variación / partida
 		/// </summary>
-		public Board.VariationModel Variation { get; } = new Board.VariationModel();
+		public Board.VariationModel Variation { get; internal set; } = new Board.VariationModel();
 
 		/// <summary>
 		///		Error de interpretación

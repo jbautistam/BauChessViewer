@@ -27,6 +27,11 @@ namespace Bau.Libraries.LibChessGame.Board
 	/// </remarks>
 	public class GameBoardModel
 	{
+		public GameBoardModel(VariationModel variation)
+		{
+			Variation = variation;
+		}
+
 		/// <summary>
 		///		Vacía el tablero (no deja ninguna pieza)
 		/// </summary>
@@ -135,12 +140,12 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// <summary>
 		///		Inicializa el tablero a la posición inicial
 		/// </summary>
-		public void Reset(GameModel game)
+		public void Reset()
 		{
 			// Limpia el tablero
 			Clear();
 			// Inicializa el juego
-			if (!game.Board.HasSetup)
+			if (!Variation.Setup.HasSetup)
 			{
 				// Añade las piezas blancas
 				AddPiece(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 0);
@@ -178,7 +183,7 @@ namespace Bau.Libraries.LibChessGame.Board
 				AddPiece(PieceBaseModel.PieceType.Pawn, PieceBaseModel.PieceColor.Black, 1, 7);
 			}
 			else
-				foreach (PieceBaseModel piece in game.Board.Pieces)
+				foreach (PieceBaseModel piece in Variation.Setup.Pieces)
 					AddPiece(piece.Type, piece.Color, piece.Cell);
 		}
 
@@ -345,6 +350,11 @@ namespace Bau.Libraries.LibChessGame.Board
 		{
 			return GetPiece(cell) == null;
 		}
+
+		/// <summary>
+		///		Variación a la que se asocia el tablero
+		/// </summary>
+		private VariationModel Variation { get; }
 
 		/// <summary>
 		///		Piezas del tablero

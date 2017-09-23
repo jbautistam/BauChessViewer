@@ -21,6 +21,7 @@ namespace BauChessViewer.ViewModels
 		public GameBoardViewModel(GameViewModel game)
 		{
 			Game = game;
+			GameBoard = new GameBoardModel(game.Game.Variation);
 		}
 
 		/// <summary>
@@ -29,7 +30,7 @@ namespace BauChessViewer.ViewModels
 		public void Reset()
 		{
 			// Inicializa el tablero
-			GameBoard.Reset(Game.Game);
+			GameBoard.Reset();
 			// Recoge los movimientos (sólo los de figuras)
 			LoadMovements(Game.Game);
 			// Inicializa el movimiento actual
@@ -58,13 +59,11 @@ namespace BauChessViewer.ViewModels
 							case MovementFigureModel move:
 									MovementFigureViewModel movementFigure = new MovementFigureViewModel(this, move, moveIndex);
 
-										// Añade el movimiento tanto a la lista de movimientos general (con comentarios)
-										// como a la lista de movimientos de piezas (sin comentarios)
+										// Añade el movimiento tanto a la lista de movimientos de piezas (sin comentarios)
 										FigureMovements.Add(move);
-										// Añade el movimiento al movimiento de figuras doble
+										// Si es necesario, crea un nuevo movimiento
 										if (lastMovement == null)
 										{
-											// Crea el
 											lastMovement = new MovementFigureDoubleViewModel(moveIndex);
 											Movements.Add(lastMovement);
 										}
@@ -89,7 +88,7 @@ namespace BauChessViewer.ViewModels
 								break;
 						}
 			}
-			// Añade un movimiento si no había ninguno
+			// Añade un comentario si no había ningún movimiento
 			if (Movements.Count == 0)
 				Movements.Add(new MovementRemarkViewModel(new MovementRemarksModel("No hay ningún movimiento en este juego")));
 		}
@@ -179,7 +178,7 @@ namespace BauChessViewer.ViewModels
 		/// <summary>
 		///		Tablero de juego
 		/// </summary>
-		public GameBoardModel GameBoard { get; private set; } = new GameBoardModel();
+		public GameBoardModel GameBoard { get; }
 
 		/// <summary>
 		///		Lista de movimientos interna: sólo con los movimientos de piezas, sin comentarios

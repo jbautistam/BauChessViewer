@@ -7,6 +7,11 @@ namespace Bau.Libraries.LibChessGame.Board
 	/// </summary>
 	public class VariationModel
 	{	
+		public VariationModel()
+		{
+			GameBoard = new GameBoardModel(this);
+		}
+
 		/// <summary>
 		///		Configuración inicial del tablero
 		/// </summary>
@@ -15,11 +20,16 @@ namespace Bau.Libraries.LibChessGame.Board
 		/// <summary>
 		///		Tablero
 		/// </summary>
-		public GameBoardModel GameBoard { get; } = new GameBoardModel();
+		public GameBoardModel GameBoard { get; }
 
 		/// <summary>
 		///		Movimientos
 		/// </summary>
 		public Movements.MovementModelCollection Movements { get; } = new Movements.MovementModelCollection();
+
+		/// <summary>
+		///		Error de interpretación
+		/// </summary>
+		public string ParseError { get; internal set; }
 	}
 }

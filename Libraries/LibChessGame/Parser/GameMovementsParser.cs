@@ -16,16 +16,15 @@ namespace Bau.Libraries.LibChessGame.Parser
 		/// <summary>
 		///		Carga los datos de un juego
 		/// </summary>
-		internal MovementModelCollection Parse(GameModel gameParsed, Game game)
+		internal MovementModelCollection Parse(VariationModel variation, Game game)
 		{
 			MovementModelCollection movements = new MovementModelCollection();
 			PieceBaseModel.PieceColor actualColor = PieceBaseModel.PieceColor.White;
-			GameBoardModel board = new GameBoardModel();
 
 				// Inicializa el tablero
-				board.Reset(gameParsed);
+				variation.GameBoard.Reset();
 				// Cambia el color inicial
-				if (gameParsed.Board.HasSetup && !gameParsed.Board.IsWhiteMove)
+				if (variation.Setup.HasSetup && !variation.Setup.IsWhiteMove)
 					actualColor = PieceBaseModel.PieceColor.Black;
 				// Carga los movimientos
 				foreach (MoveTextEntry move in game.MoveText)
@@ -42,14 +41,14 @@ namespace Bau.Libraries.LibChessGame.Parser
 							break;
 						case MovePairEntry movement:
 								// Añade el movimiento de blancas
-								movements.Add(ParseMovement(board, actualColor, (move as MovePairEntry).White));
+								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as MovePairEntry).White));
 								actualColor = GetNextColor(actualColor);
 								// Añade el movimiento de negras
-								movements.Add(ParseMovement(board, actualColor, (move as MovePairEntry).Black));
+								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as MovePairEntry).Black));
 								actualColor = GetNextColor(actualColor);
 							break;
 						case HalfMoveEntry movement:
-								movements.Add(ParseMovement(board, actualColor, (move as HalfMoveEntry).Move));
+								movements.Add(ParseMovement(variation.GameBoard, actualColor, (move as HalfMoveEntry).Move));
 								actualColor = GetNextColor(actualColor);
 							break;
 						case GameEndEntry movement:
@@ -87,6 +86,7 @@ namespace Bau.Libraries.LibChessGame.Parser
 		private MovementFigureModel ParseMovement(GameBoardModel board, PieceBaseModel.PieceColor actualColor, Move move)
 		{
 			MovementFigureModel newMovement = new MovementFigureModel();
+			CellConversor cellConversor = new CellConversor();
 
 				// Asigna los datos
 				newMovement.Color = actualColor;
@@ -115,8 +115,8 @@ namespace Bau.Libraries.LibChessGame.Parser
 									newMovement.PromotedPiece = ConvertPiece(move.PromotedPiece);
 								// Crea las acciones
 								newMovement.Actions.CreateActions(board, newMovement,
-																  ConvertCell(move.TargetSquare.Rank, move.TargetSquare.File),
-																  ConvertCell(move.OriginRank, move.OriginFile),
+																  cellConversor.ConvertCell(move.TargetSquare.Rank, move.TargetSquare.File),
+																  cellConversor.ConvertCell(move.OriginRank, move.OriginFile),
 																  targetPiece);
 						break;
 				}
@@ -155,56 +155,6 @@ namespace Bau.Libraries.LibChessGame.Parser
 				default:
 					throw new NotImplementedException();
 			}
-		}
-
-		/// <summary>
-		///		Convierte una celda
-		/// </summary>
-		internal CellModel ConvertCell(int? row, File? file)
-		{
-			return new CellModel(ConvertRow(row), ConvertColumn(file));
-		}
-
-		/// <summary>
-		///		Convierte una columna
-		/// </summary>
-		private int ConvertColumn(File? file)
-		{
-			if (file == null)
-				return -1;
-			else
-				switch (file)
-				{
-					case File.A:
-						return 0;
-					case File.B:
-						return 1;
-					case File.C:
-						return 2;
-					case File.D:
-						return 3;
-					case File.E:
-						return 4;
-					case File.F:
-						return 5;
-					case File.G:
-						return 6;
-					case File.H:
-						return 7;
-					default:
-						throw new NotImplementedException();
-				}
-		}
-
-		/// <summary>
-		///		Convierte una fila
-		/// </summary>
-		private int ConvertRow(int? row)
-		{
-			if (row == null)
-				return -1;
-			else
-				return 8 - (row ?? 0);
 		}
 
 		/// <summary>

@@ -1,96 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using ilf.pgn;
 using ilf.pgn.Data;
-using Bau.Libraries.LibChessGame.Board.Movements;
-using Bau.Libraries.LibChessGame.Board.Pieces;
 using Bau.Libraries.LibChessGame.Games;
+using Bau.Libraries.LibChessGame.Board.Pieces;
 
 namespace Bau.Libraries.LibChessGame.Parser
 {
 	/// <summary>
-	///		Intérprete de juegos
+	///		Intérprete para los datos de una variación
 	/// </summary>
-	internal class GamesParser
+	internal class GameVariationParser
 	{
 		/// <summary>
-		///		Carga los juegos de un archivo
+		///		Interpreta una variación
 		/// </summary>
-		internal GameModelCollection Load(string fileName)
+		internal Board.VariationModel Parse(Game game)
 		{
-			GameModelCollection games = new GameModelCollection();
-			Database gameDb = new PgnReader().ReadFromFile(fileName);
+			Board.VariationModel variation = new Board.VariationModel();
 
-				// Inicializa los juegos
-				foreach (Game game in gameDb.Games)
-					games.Add(Parse(game));
-				// Devuelve los juegos cargados
-				return games;
-		}
-
-		/// <summary>
-		///		Añade los datos del juego
-		/// </summary>
-		private GameModel Parse(Game game)
-		{
-			GameModel gameParsed = new GameModel();
-			GameMovementsParser movementsParser = new GameMovementsParser();
-
-				// Inicializa las propiedades básicas
-				gameParsed.Event = game.Event;
-				gameParsed.Round = game.Round;
-				gameParsed.Site = game.Site;
-				gameParsed.WhitePlayer = game.WhitePlayer;
-				gameParsed.BlackPlayer = game.BlackPlayer;
-				// newGame.Board = game.BoardSetup;
-				gameParsed.Result = ConvertResult(game.Result);
-				gameParsed.Year = game.Year;
-				gameParsed.Month = game.Month;
-				gameParsed.Day = game.Day;
-				// Añade la información adicional
-				foreach (GameInfo info in game.AdditionalInfo)
-					gameParsed.AdditionalInfo.Add(new KeyValuePair<string, string>(info.Name, info.Value));
-				// Añade las etiquetas
-				foreach (KeyValuePair<string, string> tag in game.Tags)
-					gameParsed.Tags.Add(new KeyValuePair<string, string>(tag.Key, tag.Value));
 				// Carga el setup del tablero
-				LoadGameBoard(gameParsed, game, movementsParser);
+				LoadGameBoard(variation, game);
 				// Carga los movimientos
 				try
 				{
-					gameParsed.Variation.Movements.AddRange(movementsParser.Parse(gameParsed, game));
+					variation.Movements.AddRange(new GameMovementsParser().Parse(variation, game));
 				}
 				catch (Exception exception)
 				{
-					gameParsed.ParseError = $"Error en la interpretación del juego: {exception.Message}";
+					variation.ParseError = $"Error en la interpretación del juego: {exception.Message}";
 				}
-				// Devuelve el juego interpretado
-				return gameParsed;
+				// Devuelve la variación
+				return variation;
 		}
 
 		/// <summary>
 		///		Carga el tablero de juego
 		/// </summary>
-		private void LoadGameBoard(GameModel gameParsed, Game game, GameMovementsParser movementsParser)
+		private void LoadGameBoard(Board.VariationModel variation, Game game)
 		{
 			if (game.BoardSetup != null)
 			{
 				// Asigna las propiedades
-				gameParsed.Board.CanBlackCastleKingSide = game.BoardSetup.CanBlackCastleKingSide;
-				gameParsed.Board.CanBlackCastleQueenSide = game.BoardSetup.CanBlackCastleQueenSide;
-				gameParsed.Board.CanWhiteCastleKingSide = game.BoardSetup.CanWhiteCastleKingSide;
-				gameParsed.Board.CanWhiteCastleQueenSide = game.BoardSetup.CanWhiteCastleQueenSide;
+				variation.Setup.CanBlackCastleKingSide = game.BoardSetup.CanBlackCastleKingSide;
+				variation.Setup.CanBlackCastleQueenSide = game.BoardSetup.CanBlackCastleQueenSide;
+				variation.Setup.CanWhiteCastleKingSide = game.BoardSetup.CanWhiteCastleKingSide;
+				variation.Setup.CanWhiteCastleQueenSide = game.BoardSetup.CanWhiteCastleQueenSide;
 				if (game.BoardSetup.EnPassantSquare == null)
-					gameParsed.Board.EnPassantCell = null;
+					variation.Setup.EnPassantCell = null;
 				else
-					gameParsed.Board.EnPassantCell = movementsParser.ConvertCell(game.BoardSetup.EnPassantSquare.Rank, game.BoardSetup.EnPassantSquare.File);
-				gameParsed.Board.FullMoveCount = game.BoardSetup.FullMoveCount;
-				gameParsed.Board.HalfMoveClock = game.BoardSetup.HalfMoveClock;
-				gameParsed.Board.IsWhiteMove = game.BoardSetup.IsWhiteMove;
+					variation.Setup.EnPassantCell = new CellConversor().ConvertCell(game.BoardSetup.EnPassantSquare.Rank, game.BoardSetup.EnPassantSquare.File);
+				variation.Setup.FullMoveCount = game.BoardSetup.FullMoveCount;
+				variation.Setup.HalfMoveClock = game.BoardSetup.HalfMoveClock;
+				variation.Setup.IsWhiteMove = game.BoardSetup.IsWhiteMove;
 				// Interpreta la cadena FEN con las piezas iniciales
 				if (game.Tags.TryGetValue("FEN", out string boardPieces))
-					gameParsed.Board.Pieces.AddRange(ParseBoardPieces(boardPieces));
+					variation.Setup.Pieces.AddRange(ParseBoardPieces(boardPieces));
 			}
 		}
 
@@ -187,24 +152,5 @@ namespace Bau.Libraries.LibChessGame.Parser
 					return null;
 			}
 		}
-
-		/// <summary>
-		///		Convierte el resultado
-		/// </summary>
-		private GameModel.ResultType ConvertResult(GameResult result)
-		{
-			switch (result)
-			{
-				case GameResult.Black:
-					return GameModel.ResultType.BlackWins;
-				case GameResult.White:
-					return GameModel.ResultType.WhiteWins;
-				case GameResult.Draw:
-					return GameModel.ResultType.Draw;
-				default:
-					return GameModel.ResultType.Open;
-			}
-		}
-
 	}
 }
