@@ -15,16 +15,17 @@ namespace BauChessViewer.ViewModels.Movements
 		private MovementFigureModel _movement;
 		private PieceBaseModel.PieceType _piece;
 		private PieceBaseModel.PieceColor _color;
-		private int _movementIndex;
+		private int _movementIndex, _variationIndex, _fontSize, _imageWidht;
 		private string _text, _time;
 		private bool _hasVariation, _selected;
 		private SolidColorBrush _foreGround;
 		private SolidColorBrush _backGround;
 
-		public MovementFigureViewModel(GameBoardViewModel gameBoard, MovementFigureModel movement, int movementIndex)
+		public MovementFigureViewModel(PgnGameViewModel pgnGameViewModel, MovementFigureModel movement, int movementIndex, int variationIndex)
 		{
 			// Inicializa las propiedades
-			GameBoard = gameBoard;
+			PgnGameViewModel = pgnGameViewModel;
+			VariationIndex = variationIndex;
 			Selected = false;
 			Piece = movement.OriginPiece;
 			Color = movement.Color;
@@ -33,10 +34,69 @@ namespace BauChessViewer.ViewModels.Movements
 			Text = movement.Text;
 			HasVariation = movement.Variation != null;
 			Time = "01:07";
-			// Inicializa los objetos adicionales
-			Foreground = new SolidColorBrush(Colors.Black);
-			Background = new SolidColorBrush(Colors.White);
+			// Inicializa la forma en que se debe ver el movimiento en la lista (tamaños de fuente, tamaños de imagen...)
+			AssignViewSizes(variationIndex, Selected);
+			// Inicializa los comandos
 			SelectMovementCommand = new BaseCommand(parameter => ExecuteMovement(), parameter => CanExecuteMovement());
+		}
+
+		/// <summary>
+		///		Asigna los tamaños y fuentes que se deben mostrar en la lista de movimientos dependiendo de la variación
+		/// </summary>
+		private void AssignViewSizes(int variationIndex, bool isSelected)
+		{
+			FontSize = GetFontSize(variationIndex, new int[] { 25, 20, 18, 16, 14 });
+			ImageWidth = GetImageSize(variationIndex, new int[] { 32, 20, 18, 16, 14 });
+			if (Selected)
+			{
+				Foreground = new SolidColorBrush(Colors.White);
+				Background = new SolidColorBrush(Colors.Navy);
+			}
+			else
+			{
+				Foreground = GetForeGround(variationIndex, new SolidColorBrush[] 
+																		{
+																			new SolidColorBrush(Colors.Black),
+																			new SolidColorBrush(Colors.Green),
+																			new SolidColorBrush(Colors.Navy),
+																			new SolidColorBrush(Colors.Blue),
+																			new SolidColorBrush(Colors.Maroon)
+																		});
+				Background = new SolidColorBrush(Colors.White);
+			}
+		}
+
+		/// <summary>
+		///		Obtiene el tamaño de fuente dependiendo de la variación
+		/// </summary>
+		private int GetFontSize(int variationIndex, int [] fontSizes)
+		{
+			if (variationIndex < fontSizes.Length)
+				return fontSizes[variationIndex];
+			else
+				return fontSizes[fontSizes.Length - 1];
+		}
+
+		/// <summary>
+		///		Obtiene el tamaño de imagen dependiendo de la variación
+		/// </summary>
+		private int GetImageSize(int variationIndex, int[] imageSizes)
+		{
+			if (variationIndex < imageSizes.Length)
+				return imageSizes[variationIndex];
+			else
+				return imageSizes[imageSizes.Length - 1];
+		}
+
+		/// <summary>
+		///		Obtiene el color de texto dependiendo de la variación
+		/// </summary>
+		private SolidColorBrush GetForeGround(int variationIndex, SolidColorBrush[] brushes)
+		{
+			if (variationIndex < brushes.Length)
+				return brushes[variationIndex];
+			else
+				return brushes[brushes.Length - 1];
 		}
 
 		/// <summary>
@@ -45,7 +105,7 @@ namespace BauChessViewer.ViewModels.Movements
 		private void ExecuteMovement()
 		{
 			Selected = true;
-			GameBoard.MoveTo(this);
+			PgnGameViewModel.MoveTo(this);
 		}
 
 		/// <summary>
@@ -59,7 +119,7 @@ namespace BauChessViewer.ViewModels.Movements
 		/// <summary>
 		///		Tablero de juego
 		/// </summary>
-		private GameBoardViewModel GameBoard { get; }
+		private PgnGameViewModel PgnGameViewModel { get; }
 
 		/// <summary>
 		///		Movimiento
@@ -71,6 +131,23 @@ namespace BauChessViewer.ViewModels.Movements
 		}
 
 		/// <summary>
+		///		Indice de la variación
+		/// </summary>
+		public int VariationIndex
+		{
+			get { return _variationIndex; }
+			set { CheckProperty(ref _variationIndex, value); }
+		}
+
+		/// <summary>
+		///		Indica si está dentro de una variación
+		/// </summary>
+		private bool IsRecursive
+		{
+			get { return VariationIndex > 0; }
+		}
+
+		/// <summary>
 		///		Indica si el movimiento está seleccionado
 		/// </summary>
 		public bool Selected
@@ -79,18 +156,7 @@ namespace BauChessViewer.ViewModels.Movements
 			set 
 			{ 
 				if (CheckProperty(ref _selected, value))
-				{
-					if (value)
-					{
-						Foreground = new SolidColorBrush(Colors.White);
-						Background = new SolidColorBrush(Colors.Blue);
-					}
-					else
-					{
-						Foreground = new SolidColorBrush(Colors.Black);
-						Background = new SolidColorBrush(Colors.White);
-					}
-				}
+					AssignViewSizes(VariationIndex, value);
 			}
 		}
 
@@ -146,6 +212,24 @@ namespace BauChessViewer.ViewModels.Movements
 		{
 			get { return _time; }
 			set { CheckProperty(ref _time, value); }
+		}
+
+		/// <summary>
+		///		Tamaño de la fuente
+		/// </summary>
+		public int FontSize
+		{
+			get { return _fontSize; }
+			set { CheckProperty(ref _fontSize, value); }
+		}
+
+		/// <summary>
+		///		Ancho de la imagen
+		/// </summary>
+		public int ImageWidth
+		{
+			get { return _imageWidht; }
+			set { CheckProperty(ref _imageWidht, value); }
 		}
 
 		/// <summary>

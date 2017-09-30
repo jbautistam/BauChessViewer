@@ -100,7 +100,7 @@ namespace Bau.Libraries.LibChessGame.Board
 			// Limpia el tablero
 			Clear();
 			// Inicializa el juego
-			if (!Variation.Setup.HasSetup)
+			if (Variation == null || !Variation.Setup.HasSetup)
 			{
 				// Añade las piezas blancas
 				Pieces.Add(PieceBaseModel.PieceType.Rook, PieceBaseModel.PieceColor.White, 7, 0);

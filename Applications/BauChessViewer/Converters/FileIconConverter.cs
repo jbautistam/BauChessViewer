@@ -16,8 +16,8 @@ namespace BauChessViewer.Converters
 		/// </summary>
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{ 
-			if (value is MovementFigureModel)
-				return GetIcon(value as MovementFigureModel);
+			if (value is MovementFigureModel movement)
+				return GetIcon(movement);
 			else
 				return null;
 		}
@@ -27,7 +27,6 @@ namespace BauChessViewer.Converters
 		/// </summary>
 		private string GetIcon(MovementFigureModel movement)
 		{	
-			string pathImage = "/BauChessViewer;component/Resources/Images/";
 			string nameColor = "";
 			string namePiece = "";
 
@@ -57,11 +56,10 @@ namespace BauChessViewer.Converters
 					case PieceBaseModel.PieceType.King:
 							namePiece = "King";
 						break;
-
 				}
 				// Obtiene el nombre de la imagen
 				if (!string.IsNullOrEmpty(nameColor) && !string.IsNullOrEmpty(namePiece))
-					return $"{pathImage}{namePiece}{nameColor}.gif";
+					return $"/BauChessViewer;component/Resources/Images/{namePiece}{nameColor}.gif";
 				else
 					return null;
 		}

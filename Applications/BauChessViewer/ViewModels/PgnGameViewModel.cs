@@ -2,14 +2,16 @@
 using System.Collections.ObjectModel;
 
 using Bau.Libraries.LibChessGame;
+using Bau.Libraries.LibChessGame.Board.Movements;
 using Bau.Libraries.LibChessGame.Games;
+using BauChessViewer.ViewModels.Movements;
 
 namespace BauChessViewer.ViewModels
 {
 	/// <summary>
 	///		ViewModel para un <see cref="ChessGameModel"/>
 	/// </summary>
-	public class ChessGameViewModel : BaseViewModel
+	public class PgnGameViewModel : BaseViewModel
 	{
 		// Constantes privadas
 		private const string SubPathBoard = @"Data\Graphics\Boards";
@@ -21,10 +23,14 @@ namespace BauChessViewer.ViewModels
 		private string _fileName;
 		private GameViewModel _selectedGame;
 		private PathComboImagesViewModel _comboPathBoard, _comboPathPieces;
+		private GameBoardViewModel _gameBoard;
+		private MovementListViewModel _movementsList;
+		private bool _showVariations;
 
-		public ChessGameViewModel(string pathApplication)
+		public PgnGameViewModel(string pathApplication)
 		{
 			PathApplication = pathApplication;
+			ShowVariations = true;
 			Init();
 		}
 
@@ -33,6 +39,8 @@ namespace BauChessViewer.ViewModels
 		/// </summary>
 		public void Init()
 		{
+			GameBoard = new GameBoardViewModel(this);
+			MovementsList = new MovementListViewModel(this);
 			ComboPathBoard = new PathComboImagesViewModel(System.IO.Path.Combine(PathApplication, SubPathBoard));
 			ComboPathPieces = new PathComboImagesViewModel(System.IO.Path.Combine(PathApplication, SubPathPiecess));
 			Load(new ChessGameModel());
@@ -93,8 +101,27 @@ namespace BauChessViewer.ViewModels
 		/// </summary>
 		private void UpdateSelectedGame()
 		{
-			SelectedGame?.GameBoard.Reset();
-			RaiseEventReset();
+			if (MovementsList != null)
+			{
+				MovementsList.LoadMovements(SelectedGame?.Game.Variation);
+				RaiseEventReset();
+			}
+		}
+
+		/// <summary>
+		///		Obtiene el siguiente movimiento (hacia atrás o hacia delante)
+		/// </summary>
+		internal MovementFigureModel GetMovement(bool back)
+		{
+			return MovementsList.GetMovement(back);
+		}
+
+		/// <summary>
+		///		Reorre los movimientos hasta encontrar el buscado
+		/// </summary>
+		internal void MoveTo(MovementFigureViewModel movementFigureViewModel)
+		{
+			MovementsList.MoveTo(movementFigureViewModel);
 		}
 
 		/// <summary>
@@ -166,6 +193,37 @@ namespace BauChessViewer.ViewModels
 		{ 
 			get { return _comboPathPieces; }
 			set { CheckObject(ref _comboPathPieces, value); }
+		}
+
+		/// <summary>
+		///		Tablero de juego
+		/// </summary>
+		public GameBoardViewModel GameBoard
+		{
+			get { return _gameBoard; }
+			set { CheckObject(ref _gameBoard, value); }
+		}
+
+		/// <summary>
+		///		Lista de movimientos del juego actual
+		/// </summary>
+		public MovementListViewModel MovementsList
+		{
+			get { return _movementsList; }
+			set { CheckObject(ref _movementsList, value); }
+		}
+
+		/// <summary>
+		///		Indica si se deben mostrar las variaciones en la lista de movimientos
+		/// </summary>
+		public bool ShowVariations
+		{
+			get { return _showVariations; }
+			set 
+			{ 
+				if (CheckProperty(ref _showVariations, value))
+					UpdateSelectedGame();
+			}
 		}
 	}
 }

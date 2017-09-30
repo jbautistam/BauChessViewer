@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\FileIconConverter.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoListViewModel.cs" />
@@ -63,15 +64,23 @@
     <Compile Include="ViewModels\Movements\BaseMovementViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementFigureVariationDoubleViewModel.cs" />
     <Compile Include="ViewModels\Movements\MovementFigureDoubleViewModel.cs" />
     <Compile Include="ViewModels\Movements\MovementGameEndViewModel.cs" />
+    <Compile Include="ViewModels\Movements\MovementListViewModel.cs" />
     <Compile Include="ViewModels\PathComboImagesViewModel.cs" />
-    <Compile Include="ViewModels\ChessGameViewModel.cs" />
+    <Compile Include="ViewModels\PgnGameViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Compile Include="ViewModels\Movements\MovementFigureViewModel.cs" />
     <Compile Include="ViewModels\Movements\MovementRemarkViewModel.cs" />
     <Compile Include="Views\Controls\ChessBoardView.xaml.cs">
       <DependentUpon>ChessBoardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\MovementFigureView.xaml.cs">
+      <DependentUpon>MovementFigureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\MovementsListView.xaml.cs">
+      <DependentUpon>MovementsListView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -86,6 +95,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Controls\ChessBoardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MovementFigureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\MovementsListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

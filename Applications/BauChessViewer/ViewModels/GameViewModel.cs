@@ -13,14 +13,12 @@ namespace BauChessViewer.ViewModels
 		private string _event, _round, _site, _whitePlayer, _blackPlayer, _title;
 		private string _date;
 		private AdditionalInfo.AdditionalInfoListViewModel _informationList;
-		private GameBoardViewModel _gameBoard;
 
-		public GameViewModel(ChessGameViewModel chessGameViewModel, GameModel game)
+		public GameViewModel(PgnGameViewModel chessGameViewModel, GameModel game)
 		{
 			// Asigna el juego
 			TopViewModel = chessGameViewModel;
 			Game = game;
-			GameBoard = new GameBoardViewModel(this);
 			// Carga los datos
 			if (string.IsNullOrEmpty(game.Event))
 				Event = "Sin evento definido";
@@ -42,7 +40,7 @@ namespace BauChessViewer.ViewModels
 		/// <summary>
 		///		ViewModel principal
 		/// </summary>
-		public ChessGameViewModel TopViewModel { get; }
+		public PgnGameViewModel TopViewModel { get; }
 
 		/// <summary>
 		///		Juego
@@ -119,15 +117,6 @@ namespace BauChessViewer.ViewModels
 		{
 			get { return _informationList; }
 			set { CheckObject(ref _informationList, value); }
-		}
-
-		/// <summary>
-		///		Tablero de juego
-		/// </summary>
-		public GameBoardViewModel GameBoard
-		{
-			get { return _gameBoard; }
-			set { CheckObject(ref _gameBoard, value); }
 		}
 	}
 }

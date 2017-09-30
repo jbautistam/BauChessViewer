@@ -70,7 +70,7 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		Inicializa el tablero
 		/// </summary>
-		public void Init(ChessGameViewModel chessGameViewModel)
+		public void Init(PgnGameViewModel chessGameViewModel)
 		{
 			ViewModel = chessGameViewModel;
 			ViewModel.ComboPathBoard.PropertyChanged += ComboPathImages_PropertyChanged;
@@ -108,7 +108,7 @@ namespace BauChessViewer.Views.Controls
 					for (int column = 0; column < 8; column++)
 						Cells.Add(CreateLabel(-1, column, (char) ('A' + column)));
 					// Añade las piezas
-					foreach (PieceBaseModel piece in ViewModel.SelectedGame.GameBoard.GameBoard.Pieces)
+					foreach (PieceBaseModel piece in ViewModel.MovementsList.GameBoard.Pieces)
 						Cells.Add(CreateFigure(piece.Cell.Row, piece.Cell.Column, piece.Color, piece.Type));
 					// Muestra las imágenes
 					ShowImages();
@@ -436,7 +436,7 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		ViewModel
 		/// </summary>
-		public ChessGameViewModel ViewModel { get; private set; }
+		public PgnGameViewModel ViewModel { get; private set; }
 
 		private void UserControl_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
 		{

@@ -13,7 +13,7 @@ namespace BauChessViewer
 		public MainWindow()
 		{
 			InitializeComponent();
-			ChessGameViewModel = new ViewModels.ChessGameViewModel(AppDomain.CurrentDomain.BaseDirectory);
+			ChessGameViewModel = new ViewModels.PgnGameViewModel(AppDomain.CurrentDomain.BaseDirectory);
 			DataContext = ChessGameViewModel;
 		}
 
@@ -34,6 +34,8 @@ namespace BauChessViewer
 				ChessGameViewModel.ComboPathBoard.SelectedPath = Properties.Settings.Default.PathBoardImages;
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.PathPieceImages))
 				ChessGameViewModel.ComboPathPieces.SelectedPath = Properties.Settings.Default.PathPieceImages;
+			// Indica si se muestran las variaciones
+			ChessGameViewModel.ShowVariations = Properties.Settings.Default.ShowVariations;
 		}
 
 		/// <summary>
@@ -87,16 +89,16 @@ namespace BauChessViewer
 		{
 			if (ChessGameViewModel.ChessGame != null)
 			{
-				MovementFigureModel movement = ChessGameViewModel.SelectedGame.GameBoard.GetMovement(back);
+				MovementFigureModel movement = ChessGameViewModel.GetMovement(back);
 
 					// Limpia el panel
 					ClearMovementPanel();
 					// Obtiene el siguiente movimiento
-					if (ChessGameViewModel.SelectedGame.GameBoard.ActualMovement != null)
+					if (ChessGameViewModel.MovementsList.ActualMovement != null)
 					{
-						lblMovement.Text = ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Text;
-						imgMovement.Source = udtBoard.LoadImage(ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Color, 
-																ChessGameViewModel.SelectedGame.GameBoard.ActualMovement.Piece);
+						lblMovement.Text = ChessGameViewModel.MovementsList.ActualMovement.Text;
+						imgMovement.Source = udtBoard.LoadImage(ChessGameViewModel.MovementsList.ActualMovement.Color, 
+																ChessGameViewModel.MovementsList.ActualMovement.Piece);
 						udtBoard.ShowMovement(movement, back);
 					}
 			}
@@ -109,13 +111,14 @@ namespace BauChessViewer
 		{
 			Properties.Settings.Default.PathBoardImages = ChessGameViewModel.ComboPathBoard.SelectedPath;
 			Properties.Settings.Default.PathPieceImages = ChessGameViewModel.ComboPathPieces.SelectedPath;
+			Properties.Settings.Default.ShowVariations = ChessGameViewModel.ShowVariations;
 			Properties.Settings.Default.Save();
 		}
 
 		/// <summary>
 		///		ViewModel para el juego
 		/// </summary>
-		public ViewModels.ChessGameViewModel ChessGameViewModel { get; private set; }
+		public ViewModels.PgnGameViewModel ChessGameViewModel { get; private set; }
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -139,10 +142,8 @@ namespace BauChessViewer
 
 		private void lstMovements_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			System.Windows.Controls.ListBox lstView = sender as System.Windows.Controls.ListBox;
-
-				if (lstView != null && ChessGameViewModel?.SelectedGame?.GameBoard?.SelectedMovement != null)
-					lstView.ScrollIntoView(ChessGameViewModel.SelectedGame.GameBoard.SelectedMovement);
+			if (sender is System.Windows.Controls.ListBox lstView && ChessGameViewModel?.MovementsList?.SelectedMovement != null)
+				lstView.ScrollIntoView(ChessGameViewModel.MovementsList.SelectedMovement);
 		}
 
 		private void cboGame_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

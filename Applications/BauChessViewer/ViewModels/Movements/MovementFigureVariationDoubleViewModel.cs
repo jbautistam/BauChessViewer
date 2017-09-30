@@ -4,9 +4,9 @@ using System.Windows.Media;
 namespace BauChessViewer.ViewModels.Movements
 {
 	/// <summary>
-	///		ViewModel de un par de movimientos de figura para una variación
+	///		ViewModel de un par de movimientos de figura
 	/// </summary>
-	public class MovementFigureVariationDoubleViewModel : BaseMovementViewModel
+	public class MovementFigureDoubleViewModel : BaseMovementViewModel
 	{
 		// Variables privadas
 		private MovementFigureViewModel _blackMovement, _whiteMovement;
@@ -14,10 +14,10 @@ namespace BauChessViewer.ViewModels.Movements
 		private string _movementNumber;
 		private SolidColorBrush _foreground;
 
-		public MovementFigureVariationDoubleViewModel(int movementIndex, int movementLineIndex, int variationIndex)
+		public MovementFigureDoubleViewModel(int movementIndex, int movementLineIndex)
 		{
 			MovementIndex = movementIndex;
-			MovementNumber = $" {movementLineIndex}-{variationIndex}. ";
+			MovementNumber = $"{movementLineIndex}. ";
 			Foreground = Brushes.Black;
 		}
 

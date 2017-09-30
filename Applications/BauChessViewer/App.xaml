@@ -8,5 +8,6 @@
 		<!-- Conversores -->
 		<converter:FileIconConverter x:Key="FileIconConverter" />
 		<converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+		<converter:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter" />
 	</Application.Resources>
 </Application>

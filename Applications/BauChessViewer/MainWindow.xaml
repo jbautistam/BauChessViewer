@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BauChessViewer"
 		xmlns:viewModels="clr-namespace:BauChessViewer.ViewModels.Movements"
         mc:Ignorable="d"
-        Title="Bau Pgn Viewer" Height="650" Width="825" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        Title="Bau Pgn Viewer" Height="857" Width="1279" Loaded="Window_Loaded" 
+		WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -55,78 +56,9 @@
 		<Border Grid.Row="1" Grid.Column="0" Margin="2" Padding="5" BorderBrush="Black" BorderThickness="1" Background="#FF40B9E6">
 			<Controls:ChessBoardView x:Name="udtBoard"/>
 		</Border>
-		<TabControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+		<TabControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5">
 			<TabItem Header="Movimientos">
-				<ListBox ItemsSource="{Binding Path=SelectedGame.GameBoard.Movements}" SelectedItem="{Binding Path=SelectedGame.GameBoard.SelectedMovement}" 
-						HorizontalContentAlignment="Stretch" 
-						SelectionChanged="lstMovements_SelectionChanged" >
-					<ListBox.Resources>
-						<!-- Plantilla de datos para el tipo para MovementFigureViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementFigureDoubleViewModel}">
-							<Grid HorizontalAlignment="Stretch">
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=MovementNumber}" 
-										Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Foreground}" 
-										FontSize="25" FontWeight="Bold" />
-								<Button Grid.Row="0" Grid.Column="1" BorderThickness="0" Background="{Binding Path=WhiteMovement.Background}" 
-										Command="{Binding Path=WhiteMovement.SelectMovementCommand}" >
-									<Button.Content>
-										<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
-													Source="{Binding Path=WhiteMovement.Movement,Converter={StaticResource FileIconConverter}}" />
-											<TextBlock Text="{Binding Path=WhiteMovement.Text}" 
-													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=WhiteMovement.Foreground}" 
-													FontSize="25" FontWeight="Bold" />
-										</StackPanel>
-									</Button.Content>
-								</Button>
-								<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="White"
-										Visibility="{Binding Path=WhiteMovement.HasVariation,Converter={StaticResource BoolToVisibilityConverter}}" >
-									<Button.Content>
-											<Image Width="16" Height="16" Source="Resources/Images/ArrowNext.png" />
-									</Button.Content>
-								</Button>
-								<Button Grid.Row="0" Grid.Column="3" BorderThickness="0" Background="{Binding Path=BlackMovement.Background}" 
-										Command="{Binding Path=BlackMovement.SelectMovementCommand}" >
-									<Button.Content>
-										<StackPanel Orientation="Horizontal">
-											<Image Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,2,0"
-													Source="{Binding Path=BlackMovement.Movement,Converter={StaticResource FileIconConverter}}" />
-											<TextBlock Text="{Binding Path=BlackMovement.Text}" 
-													Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=BlackMovement.Foreground}" 
-													FontSize="25" FontWeight="Bold" />
-										</StackPanel>
-									</Button.Content>
-								</Button>
-								<Button Grid.Row="0" Grid.Column="4" BorderThickness="0" Background="White"
-										Visibility="{Binding Path=BlackMovement.HasVariation,Converter={StaticResource BoolToVisibilityConverter}}" >
-									<Button.Content>
-										<Image Width="16" Height="16" Source="Resources/Images/ArrowNext.png" />
-									</Button.Content>
-								</Button>
-							</Grid>
-						</DataTemplate>
-						<!-- Plantilla de datos para el tipo para MovementRemarkViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementRemarkViewModel}">
-							<StackPanel Orientation="Horizontal">
-								<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" FontSize="12" />
-							</StackPanel>
-						</DataTemplate>
-						<!-- Plantilla de datos para el tipo para MovementGameEndViewModel -->
-						<DataTemplate DataType="{x:Type viewModels:MovementGameEndViewModel}">
-							<TextBlock Text="{Binding Path=Text}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-						</DataTemplate>
-					</ListBox.Resources>
-				</ListBox>
+				<Controls:MovementsListView x:Name="udtListMovements" ViewModel="{Binding Path=ChessGameViewModel}" />
 			</TabItem>
 			<TabItem Header="Información">
 				<ListView ItemsSource="{Binding Path=SelectedGame.InformationList.Items}" Foreground="Black">
@@ -161,6 +93,7 @@
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Tablero:" VerticalAlignment="Center" />
 				<ComboBox Grid.Row="0" Grid.Column="1" Margin="5" 
@@ -168,6 +101,7 @@
 				<TextBlock Grid.Row="0" Grid.Column="2" Margin="5" Text="Piezas:" VerticalAlignment="Center" />
 				<ComboBox Grid.Row="0" Grid.Column="3" Margin="5" 
 					ItemsSource="{Binding Path=ComboPathPieces.Paths}" SelectedItem="{Binding Path=ComboPathPieces.SelectedPath}" />
+				<CheckBox Grid.Row="0" Grid.Column="4" Margin="5" Content="Mostrar variaciones" IsChecked="{Binding Path=ShowVariations}" />
 			</Grid>
 		</Border>
 	</Grid>

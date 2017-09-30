@@ -4,19 +4,19 @@ using System.Windows.Data;
 namespace BauChessViewer.Converters
 {
 	/// <summary>
-	///		Conversor para transformar un valor booleano en un enumerado "Visibility"
+	///		Conversor para transformar si un objeto es nulo en un enumerado "Visibility"
 	/// </summary>
-	public class BoolToVisibilityConverter : IValueConverter
+	public class ObjectToVisibilityConverter : IValueConverter
 	{
 		/// <summary>
 		///		Convierte un valor boolean en un valor de FontWeight
 		/// </summary>
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{ 
-			if (value != null && (value is bool) && (bool) value)
+			if (value != null)
 				return System.Windows.Visibility.Visible;
 			else
-				return System.Windows.Visibility.Collapsed;
+				return System.Windows.Visibility.Hidden;
 		}
 
 		/// <summary>

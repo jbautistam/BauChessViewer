@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="BauChessViewer.Views.Controls.MovementFigureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BauChessViewer.Views.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="grdMovement">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+		<Button Grid.Row="0" Grid.Column="0" BorderThickness="0" Background="{Binding Path=Movement.Background}" 
+				Command="{Binding Path=Movement.SelectMovementCommand}" >
+			<Button.Content>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Image Width="{Binding Path=Movement.ImageWidth}" Height="{Binding Path=Movement.ImageWidth}" 
+							VerticalAlignment="Center" Margin="0,0,2,0"
+							Source="{Binding Path=Movement.Movement,Converter={StaticResource FileIconConverter}}" />
+					<TextBlock Text="{Binding Path=Movement.Text}" 
+							Margin="0" VerticalAlignment="Center" Foreground="{Binding Path=Movement.Foreground}" 
+							FontSize="{Binding Path=Movement.FontSize}" FontWeight="Bold" />
+				</StackPanel>
+			</Button.Content>
+		</Button>
+		<Button Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="White"
+				Visibility="{Binding Path=Movement,Converter={StaticResource ObjectToVisibilityConverter}}">
+			<Button.Content>
+					<Image Width="16" Height="16" Source="/BauChessViewer;component/Resources/Images/ArrowNext.png"
+						Visibility="{Binding Path=Movement.HasVariation,Converter={StaticResource BoolToVisibilityConverter}}" />
+			</Button.Content>
+		</Button>   
+    </Grid>
+</UserControl>
