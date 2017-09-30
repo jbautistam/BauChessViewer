@@ -61,6 +61,7 @@
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoListViewModel.cs" />
     <Compile Include="ViewModels\AdditionalInfo\AdditionalInfoViewModel.cs" />
     <Compile Include="ViewModels\BaseCommand.cs" />
+    <Compile Include="ViewModels\EventArguments\ShowMovementEventArgs.cs" />
     <Compile Include="ViewModels\Movements\BaseMovementViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\GameBoardViewModel.cs" />

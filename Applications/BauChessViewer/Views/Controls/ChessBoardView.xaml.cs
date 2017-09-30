@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 using Bau.Libraries.LibChessGame.Board;
@@ -60,6 +62,53 @@ namespace BauChessViewer.Views.Controls
 			///		Etiqueta
 			/// </summary>
 			public Label Label { get; }
+		}
+
+		/// <summary>
+		///		Acción de un movimiento para su visualización
+		/// </summary>
+		private class ActionViewMovement
+		{
+			/// <summary>
+			///		Tipo de acción
+			/// </summary>
+			public enum ActionType
+			{
+				/// <summary>Mover</summary>
+				Move,
+				/// <summary>Crear</summary>
+				Create,
+				/// <summary>Destruir</summary>
+				Destroy
+			}
+
+			public ActionViewMovement(ActionType type, Figure figure, int endRow, int endColumn)
+			{
+				Type = type;
+				Figure = figure;
+				EndRow = endRow;
+				EndColumn = endColumn;
+			}
+
+			/// <summary>
+			///		Tipo de acción
+			/// </summary>
+			public ActionType Type { get; }
+
+			/// <summary>
+			///		Figura asociada
+			/// </summary>
+			public Figure Figure { get; }
+
+			/// <summary>
+			///		Fila final del movimiento
+			/// </summary>
+			public int EndRow { get; }
+
+			/// <summary>
+			///		Columna final del movimiento
+			/// </summary>
+			public int EndColumn { get; }
 		}
 
 		public ChessBoardView()
@@ -140,10 +189,7 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		private Figure CreateFigure(int row, int column, PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
 		{
-			Figure image = new Figure(row, column, color, type, CreateImage(color, type), null);
-
-				// Devuelve la imagen
-				return image;
+			return new Figure(row, column, color, type, CreateImage(color, type), null);
 		}
 
 		/// <summary>
@@ -176,7 +222,7 @@ namespace BauChessViewer.Views.Controls
 		}
 
 		/// <summary>
-		///		Obtiene el nombre de archivo a cargar
+		///		Obtiene el nombre de archivo de imagen a cargar
 		/// </summary>
 		private string GetImageFileName(PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
 		{
@@ -295,76 +341,186 @@ namespace BauChessViewer.Views.Controls
 		/// <summary>
 		///		Muestra un movimiento
 		/// </summary>
-		internal void ShowMovement(MovementFigureModel movement, bool backMovement)
+		internal void ShowMovement(MovementFigureModel movement, bool backMovement, bool showAnimation)
 		{
 			if (movement != null)
 			{
-				// Recorre las acciones del movimiento hacia delante o hacia atrás
-				if (!backMovement)
-					foreach (ActionBaseModel action in movement.Actions)
-						switch (action)
-						{
-							case ActionMoveModel move:
-									MovePiece(move);
-								break;
-							case ActionCaptureModel move:
-									CapturePiece(move);
-								break;
-							case ActionPromoteModel move:
-									PromotePiece(move);
-								break;
-						}
-				else
-					for (int index = movement.Actions.Count - 1; index >= 0; index--)
-						switch (movement.Actions[index])
-						{
-							case ActionMoveModel move:
-									UndoMovePiece(move);
-								break;
-							case ActionCaptureModel move:
-									UndoCapturePiece(move);
-								break;
-							case ActionPromoteModel move:
-									UndoPromotePiece(move);
-								break;
-						}
-				// Muestra las imágenes
-				ShowImages();
+				Storyboard sbStoryBoard = new Storyboard();
+				List<ActionViewMovement> actions = new List<ActionViewMovement>();
+
+					// Asigna el evento de fin de animación
+					sbStoryBoard.Completed += (sender, evntArgs) => ExecuteActions(actions);
+					// Limpia el storyBoard
+					sbStoryBoard.Children.Clear();
+					// Asigna las propiedades de duración
+					sbStoryBoard.BeginTime = TimeSpan.FromSeconds(0);
+					sbStoryBoard.Duration = new Duration(TimeSpan.FromSeconds(5));
+					// Recorre las acciones del movimiento hacia delante o hacia atrás
+					if (!backMovement)
+						foreach (ActionBaseModel action in movement.Actions)
+							switch (action)
+							{
+								case ActionMoveModel move:
+										actions.Add(GetActionMovePiece(move));
+									break;
+								case ActionCaptureModel move:
+										actions.Add(GetActionCapturePiece(move));
+									break;
+								case ActionPromoteModel move:
+										actions.Add(GetActionPromotePiece(move));
+									break;
+							}
+					else
+						for (int index = movement.Actions.Count - 1; index >= 0; index--)
+							switch (movement.Actions[index])
+							{
+								case ActionMoveModel move:
+										actions.Add(GetActionUndoMovePiece(move));
+									break;
+								case ActionCaptureModel move:
+										actions.Add(GetActionUndoCapturePiece(move));
+									break;
+								case ActionPromoteModel move:
+										actions.Add(GetActionUndoPromotePiece(move));
+									break;
+							}
+					// Crea las animaciones
+
+					// Muestra las imágenes
+					if (showAnimation && sbStoryBoard.Children.Count > 0)
+						sbStoryBoard.Begin();
+					// else
+						ExecuteActions(actions);
 			}
 		}
 
 		/// <summary>
-		///		Mueve una pieza
+		///		Añade una animación al storyBoard
 		/// </summary>
-		private void MovePiece(ActionMoveModel action)
-		{
-			Figure piece = SearchPiece(action.Type, action.Color, action.From);
-
-				// Cambia la posición de la pieza
-				if (piece.Type != null)
-				{
-					piece.Column = action.To.Column;
-					piece.Row = action.To.Row;
-				}
-				else
-					System.Diagnostics.Debug.WriteLine("No se encuentra");
+		private void AddAnimationToStoryBoard(Storyboard storyBoard, DependencyObject control, AnimationTimeline animation, 
+											  int startSeconds, int endSeconds, PropertyPath propertyPath)
+		{   
+			// Asigna las propiedades de inicio y duración
+			animation.BeginTime = TimeSpan.FromSeconds(startSeconds);
+			animation.Duration = TimeSpan.FromSeconds(endSeconds);
+			//// Asigna las propiedades de velocidad
+			//if (action.Parameters.AccelerationRatio != null)
+			//	animation.AccelerationRatio = action.Parameters.AccelerationRatio ?? 0;
+			//else if (action.TimeLine.Parameters.AccelerationRatio != null)
+			//	animation.AccelerationRatio = action.TimeLine.Parameters.AccelerationRatio ?? 0;
+			//if (action.Parameters.DecelerationRatio != null)
+			//	animation.DecelerationRatio = action.Parameters.DecelerationRatio ?? 0;
+			//else if (action.TimeLine.Parameters.DecelerationRatio != null)
+			//	animation.DecelerationRatio = action.TimeLine.Parameters.DecelerationRatio ?? 0;
+			//if (action.Parameters.SpeedRatio != null)
+			//	animation.SpeedRatio = action.Parameters.SpeedRatio ?? 0;
+			//else if (action.TimeLine.Parameters.SpeedRatio != null)
+			//	animation.SpeedRatio = action.TimeLine.Parameters.SpeedRatio ?? 0;
+			// Añade los datos a la animación
+			Storyboard.SetTarget(animation, control);
+			Storyboard.SetTargetProperty(animation, propertyPath);
+			// Añade la animación al storyboard
+			storyBoard.Children.Add(animation);
 		}
 
 		/// <summary>
-		///		Deshace el movimiento de una pieza
+		///		Obtiene una acción para mover una pieza
 		/// </summary>
-		private void UndoMovePiece(ActionMoveModel action)
+		private ActionViewMovement GetActionMovePiece(ActionMoveModel action)
+		{
+			Figure piece = SearchPiece(action.Type, action.Color, action.From);
+
+				// Obtiene el movimiento
+				if (piece.Type != null)
+					return new ActionViewMovement(ActionViewMovement.ActionType.Move, piece, action.To.Row, action.To.Column);
+				else
+					return null;
+		}
+
+		/// <summary>
+		///		Obtiene el movimiento para deshacer el movimiento de una pieza
+		/// </summary>
+		private ActionViewMovement GetActionUndoMovePiece(ActionMoveModel action)
 		{
 			Figure piece = SearchPiece(action.Type, action.Color, action.To);
 
 				// Cambia la posición de la pieza
 				if (piece.Type != null)
-				{
-					piece.Column = action.From.Column;
-					piece.Row = action.From.Row;
-				}
+					return new ActionViewMovement(ActionViewMovement.ActionType.Move, piece, action.From.Row, action.From.Column);
 				else
-					System.Diagnostics.Debug.WriteLine("No se encuentra");
+					return null;
+		}
+
+		/// <summary>
+		///		Obtiene el movimiento para capturar una pieza
+		/// </summary>
+		private ActionViewMovement GetActionCapturePiece(ActionCaptureModel action)
+		{
+			Figure figure = SearchPiece(action.Type, action.Color, action.From);
+
+				if (figure.Type != null)
+					return new ActionViewMovement(ActionViewMovement.ActionType.Destroy, figure, 0, 0);
+				else
+					return null;
+		}
+
+		/// <summary>
+		///		Obtiene el movimiento para deshacer la captura de una pieza
+		/// </summary>
+		private ActionViewMovement GetActionUndoCapturePiece(ActionCaptureModel action)
+		{
+			return new ActionViewMovement(ActionViewMovement.ActionType.Create, 
+										  CreateFigure(action.From.Row, action.From.Column, action.Color, action.Type),
+										  action.From.Row, action.From.Column);
+		}
+
+		/// <summary>
+		///		Promociona una pieza
+		/// </summary>
+		private ActionViewMovement GetActionPromotePiece(ActionPromoteModel action)
+		{
+			return new ActionViewMovement(ActionViewMovement.ActionType.Create,
+										  CreateFigure(action.To.Row, action.To.Column, action.Color, action.Type),
+										  action.To.Row, action.To.Column);
+		}
+
+		/// <summary>
+		///		Deshace el movimiento de promoción de una pieza
+		/// </summary>
+		private ActionViewMovement GetActionUndoPromotePiece(ActionPromoteModel action)
+		{
+			Figure figure = SearchPiece(action.Type, action.Color, action.To);
+
+				if (figure.Type != null)
+					return new ActionViewMovement(ActionViewMovement.ActionType.Destroy, figure,
+												  action.To.Row, action.To.Column);
+				else
+					return null;
+		}
+
+		/// <summary>
+		///		Ejecuta una serie de acciones sobre la lista de figuras
+		/// </summary>
+		private void ExecuteActions(List<ActionViewMovement> actions)
+		{
+			// Ejecuta las acciones
+			foreach (ActionViewMovement action in actions)
+				switch (action.Type)
+				{
+					case ActionViewMovement.ActionType.Move:
+							action.Figure.Row = action.EndRow;
+							action.Figure.Column = action.EndColumn;
+						break;
+					case ActionViewMovement.ActionType.Create:
+							Cells.Add(action.Figure);
+						break;
+					case ActionViewMovement.ActionType.Destroy:
+							Cells.Remove(action.Figure);
+							udtCanvas.Children.Remove(action.Figure.Image);
+						break;
+				}
+			// Muestra las imágenes
+			ShowImages();
 		}
 
 		/// <summary>
@@ -378,54 +534,6 @@ namespace BauChessViewer.Views.Controls
 					return figure;
 			// Devuelve una pieza vacía
 			return new Figure(-1, -1, color, null, null, null);
-		}
-
-		/// <summary>
-		///		Captura una pieza
-		/// </summary>
-		private void CapturePiece(ActionCaptureModel action)
-		{
-			Figure figure = SearchPiece(action.Type, action.Color, action.From);
-
-				if (figure.Type != null)
-				{	
-					Cells.Remove(figure);
-					udtCanvas.Children.Remove(figure.Image);
-				}
-				else
-					System.Diagnostics.Debug.WriteLine("No se encuentra");
-		}
-
-		/// <summary>
-		///		Deshace el movimiento de captura de una pieza
-		/// </summary>
-		private void UndoCapturePiece(ActionCaptureModel action)
-		{
-			Cells.Add(CreateFigure(action.From.Row, action.From.Column, action.Color, action.Type));
-		}
-
-		/// <summary>
-		///		Promociona una pieza
-		/// </summary>
-		private void PromotePiece(ActionPromoteModel action)
-		{
-			Cells.Add(CreateFigure(action.To.Row, action.To.Column, action.Color, action.Type));
-		}
-
-		/// <summary>
-		///		Deshace el movimiento de promoción de una pieza
-		/// </summary>
-		private void UndoPromotePiece(ActionPromoteModel action)
-		{
-			Figure figure = SearchPiece(action.Type, action.Color, action.To);
-
-				if (figure.Type != null)
-				{	
-					Cells.Remove(figure);
-					udtCanvas.Children.Remove(figure.Image);
-				}
-				else
-					System.Diagnostics.Debug.WriteLine("No se encuentra");
 		}
 
 		/// <summary>

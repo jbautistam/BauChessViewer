@@ -24,7 +24,7 @@ namespace BauChessViewer
 		{
 			// Inicializa el tablero
 			ChessGameViewModel.Init();
-			ChessGameViewModel.ShowNextMovement += (sender, evntArgs) => ShowMovement(false);
+			ChessGameViewModel.ShowNextMovement += (sender, evntArgs) => ShowMovement(false, evntArgs.ShowAnimation);
 			udtBoard.Init(ChessGameViewModel);
 			// Carga el archivo inicial
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.Game))
@@ -85,7 +85,7 @@ namespace BauChessViewer
 		/// <summary>
 		///		Muestra el movimiento siguiente / anterior
 		/// </summary>
-		private void ShowMovement(bool back)
+		private void ShowMovement(bool back, bool showAnimation)
 		{
 			if (ChessGameViewModel.ChessGame != null)
 			{
@@ -99,7 +99,7 @@ namespace BauChessViewer
 						lblMovement.Text = ChessGameViewModel.MovementsList.ActualMovement.Text;
 						imgMovement.Source = udtBoard.LoadImage(ChessGameViewModel.MovementsList.ActualMovement.Color, 
 																ChessGameViewModel.MovementsList.ActualMovement.Piece);
-						udtBoard.ShowMovement(movement, back);
+						udtBoard.ShowMovement(movement, back, showAnimation);
 					}
 			}
 		}
@@ -132,12 +132,12 @@ namespace BauChessViewer
 
 		private void cmdNextMovement_Click(object sender, RoutedEventArgs e)
 		{
-			ShowMovement(false);
+			ShowMovement(false, true);
 		}
 
 		private void cmdPreviousMovement_Click(object sender, RoutedEventArgs e)
 		{
-			ShowMovement(true);
+			ShowMovement(true, true);
 		}
 
 		private void lstMovements_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

@@ -18,7 +18,7 @@ namespace BauChessViewer.ViewModels
 		private const string SubPathPiecess = @"Data\Graphics\Pieces";
 		// Eventos públicos
 		public event EventHandler ResetGame;
-		public event EventHandler ShowNextMovement;
+		public event EventHandler<EventArguments.ShowMovementEventArgs> ShowNextMovement;
 		// Variables privadas
 		private string _fileName;
 		private GameViewModel _selectedGame;
@@ -137,7 +137,7 @@ namespace BauChessViewer.ViewModels
 		/// </summary>
 		internal void RaiseEventNextMovement()
 		{
-			ShowNextMovement?.Invoke(this, EventArgs.Empty);
+			ShowNextMovement?.Invoke(this, new EventArguments.ShowMovementEventArgs(false));
 		}
 
 		/// <summary>
