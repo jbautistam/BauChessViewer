@@ -34,8 +34,9 @@ namespace BauChessViewer
 				ChessGameViewModel.ComboPathBoard.SelectedPath = Properties.Settings.Default.PathBoardImages;
 			if (!string.IsNullOrEmpty(Properties.Settings.Default.PathPieceImages))
 				ChessGameViewModel.ComboPathPieces.SelectedPath = Properties.Settings.Default.PathPieceImages;
-			// Indica si se muestran las variaciones
+			// Asigna el resto de las propiedades
 			ChessGameViewModel.ShowVariations = Properties.Settings.Default.ShowVariations;
+			ChessGameViewModel.MustShowAnimation = Properties.Settings.Default.MustShowAnimations;
 		}
 
 		/// <summary>
@@ -112,6 +113,7 @@ namespace BauChessViewer
 			Properties.Settings.Default.PathBoardImages = ChessGameViewModel.ComboPathBoard.SelectedPath;
 			Properties.Settings.Default.PathPieceImages = ChessGameViewModel.ComboPathPieces.SelectedPath;
 			Properties.Settings.Default.ShowVariations = ChessGameViewModel.ShowVariations;
+			Properties.Settings.Default.MustShowAnimations = ChessGameViewModel.MustShowAnimation;
 			Properties.Settings.Default.Save();
 		}
 

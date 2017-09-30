@@ -26,10 +26,10 @@
 					<Image Source="Resources/Images/Folder.png" />
 				</Button>
 				<Separator/>
-				<Button ToolTip="Anterior" Click="cmdPreviousMovement_Click">
+				<Button ToolTip="Anterior" Click="cmdPreviousMovement_Click" IsEnabled="{Binding ElementName=udtBoard,Path=CanMove}">
 					<Image Source="Resources/Images/ArrowPrevious.png" />
 				</Button>
-				<Button ToolTip="Siguiente" Click="cmdNextMovement_Click">
+				<Button ToolTip="Siguiente" Click="cmdNextMovement_Click" IsEnabled="{Binding ElementName=udtBoard,Path=CanMove}">
 					<Image Source="Resources/Images/ArrowNext.png" />
 				</Button>
 			</ToolBar>
@@ -94,6 +94,7 @@
 					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Tablero:" VerticalAlignment="Center" />
 				<ComboBox Grid.Row="0" Grid.Column="1" Margin="5" 
@@ -101,7 +102,8 @@
 				<TextBlock Grid.Row="0" Grid.Column="2" Margin="5" Text="Piezas:" VerticalAlignment="Center" />
 				<ComboBox Grid.Row="0" Grid.Column="3" Margin="5" 
 					ItemsSource="{Binding Path=ComboPathPieces.Paths}" SelectedItem="{Binding Path=ComboPathPieces.SelectedPath}" />
-				<CheckBox Grid.Row="0" Grid.Column="4" Margin="5" Content="Mostrar variaciones" IsChecked="{Binding Path=ShowVariations}" />
+				<CheckBox Grid.Row="0" Grid.Column="4" Margin="5" Content="Mostrar animaciones" IsChecked="{Binding Path=MustShowAnimation}" />
+				<CheckBox Grid.Row="0" Grid.Column="5" Margin="5" Content="Mostrar variaciones" IsChecked="{Binding Path=ShowVariations}" />
 			</Grid>
 		</Border>
 	</Grid>

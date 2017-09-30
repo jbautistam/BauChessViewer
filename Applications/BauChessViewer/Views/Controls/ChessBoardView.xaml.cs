@@ -18,6 +18,14 @@ namespace BauChessViewer.Views.Controls
 	/// </summary>
 	public partial class ChessBoardView : UserControl
 	{
+		// Constantes privadas
+		private const int LabelWidth = 30;
+		private const int LabelHeight = 30;
+		private const double AnimationTime = 0.25;
+		// Propiedades
+		public static readonly DependencyProperty CanMoveProperty = DependencyProperty.Register(nameof(CanMove), typeof(bool),
+																								typeof(ChessBoardView), new PropertyMetadata(true));
+
 		/// <summary>
 		///		Estructura para las figuras en el tablero
 		/// </summary>
@@ -142,7 +150,7 @@ namespace BauChessViewer.Views.Controls
 					// Añade las celdas
 					for (int row = 0; row < 8; row++)
 					{
-						// Dibuja por columnas
+						// Rellena por columnas
 						for (int column = 0; column < 8; column++)
 						{
 							Cells.Add(CreateFigure(row, column, color, null));
@@ -172,10 +180,10 @@ namespace BauChessViewer.Views.Controls
 			Label label = new Label 
 									{ 
 										Content = content.ToString(), 
-										HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center,
-										VerticalContentAlignment = System.Windows.VerticalAlignment.Center,
+										HorizontalContentAlignment = HorizontalAlignment.Center,
+										VerticalContentAlignment = VerticalAlignment.Center,
 										FontSize = 16, 
-										FontWeight = System.Windows.FontWeights.Bold 
+										FontWeight = FontWeights.Bold 
 									};
 
 				// Añade la figura al canvas
@@ -189,22 +197,24 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		private Figure CreateFigure(int row, int column, PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
 		{
-			return new Figure(row, column, color, type, CreateImage(color, type), null);
+			return new Figure(row, column, color, type, CreateImage(color, type, row, column), null);
 		}
 
 		/// <summary>
 		///		Crea una imagen y la añade al canvas
 		/// </summary>
-		private Image CreateImage(PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type)
+		private Image CreateImage(PieceBaseModel.PieceColor color, PieceBaseModel.PieceType? type, int row, int column)
 		{
 			Image view = new Image();
 
 				// Carga la imagen
 				view.Source = LoadImage(GetImageFileName(color, type));
 				view.Stretch = Stretch.Fill;
-				// Añade la imagen al control
-				Canvas.SetTop(view, 0);
-				Canvas.SetLeft(view, 0);
+				// Asigna las propiedades de visualización
+				Canvas.SetTop(view, GetImageTop(row));
+				Canvas.SetLeft(view, GetImageLeft(column));
+				view.Width = GetImageWidth();
+				view.Height = GetImageHeight();
 				// Añade el elemento al canvas
 				udtCanvas.Children.Add(view);
 				// Devuelve el control
@@ -304,16 +314,14 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		private void ShowImages()
 		{
-			int labelWidth = 30;
-			int labelHeight = 30;
-			int width = (int) (ActualWidth - labelWidth) / 8;
-			int height = (int) (ActualHeight - labelHeight) / 8;
+			int width = GetImageWidth();
+			int height = GetImageHeight();
 
 				foreach (Figure cell in Cells)
 					if (cell.Label == null)
 					{
-						Canvas.SetTop(cell.Image, labelHeight + height * cell.Row);
-						Canvas.SetLeft(cell.Image, labelWidth + width * cell.Column);
+						Canvas.SetTop(cell.Image, LabelHeight + height * cell.Row);
+						Canvas.SetLeft(cell.Image, LabelWidth + width * cell.Column);
 						cell.Image.Width = width;
 						cell.Image.Height = height;
 						if (cell.Type == null)
@@ -325,17 +333,49 @@ namespace BauChessViewer.Views.Controls
 					{
 						if (cell.Column == -1) // ... cabeceras de fila
 						{
-							Canvas.SetTop(cell.Label, labelHeight + (height - labelHeight) / 2 + height * cell.Row);
+							Canvas.SetTop(cell.Label, LabelHeight + (height - LabelHeight) / 2 + height * cell.Row);
 							Canvas.SetLeft(cell.Label, 0);
 						}
 						else // ... cabeceras de columna
 						{
 							Canvas.SetTop(cell.Label, 0);
-							Canvas.SetLeft(cell.Label, labelWidth +  (width - labelWidth) / 2 + width * cell.Column);
+							Canvas.SetLeft(cell.Label, LabelWidth +  (width - LabelWidth) / 2 + width * cell.Column);
 						}
-						cell.Label.Width = labelWidth;
-						cell.Label.Height = labelHeight;
+						cell.Label.Width = LabelWidth;
+						cell.Label.Height = LabelHeight;
 					}
+		}
+
+		/// <summary>
+		///		Obtiene el ancho de la imagen
+		/// </summary>
+		private int GetImageWidth()
+		{
+			return (int) (ActualWidth - LabelWidth) / 8;
+		}
+
+		/// <summary>
+		///		Obtiene el alto de la imagen
+		/// </summary>
+		private int GetImageHeight()
+		{
+			return (int) (ActualHeight - LabelHeight) / 8;
+		}
+
+		/// <summary>
+		///		Obtiene la posición Y de una imagen a partir de su fila
+		/// </summary>
+		private double GetImageTop(int row)
+		{
+			return LabelHeight + GetImageHeight() * row;
+		}
+
+		/// <summary>
+		///		Obtiene la posición X de una imagen a partir de su fila
+		/// </summary>
+		private double GetImageLeft(int column)
+		{
+			return LabelWidth + GetImageWidth() * column;
 		}
 
 		/// <summary>
@@ -345,16 +385,8 @@ namespace BauChessViewer.Views.Controls
 		{
 			if (movement != null)
 			{
-				Storyboard sbStoryBoard = new Storyboard();
 				List<ActionViewMovement> actions = new List<ActionViewMovement>();
 
-					// Asigna el evento de fin de animación
-					sbStoryBoard.Completed += (sender, evntArgs) => ExecuteActions(actions);
-					// Limpia el storyBoard
-					sbStoryBoard.Children.Clear();
-					// Asigna las propiedades de duración
-					sbStoryBoard.BeginTime = TimeSpan.FromSeconds(0);
-					sbStoryBoard.Duration = new Duration(TimeSpan.FromSeconds(5));
 					// Recorre las acciones del movimiento hacia delante o hacia atrás
 					if (!backMovement)
 						foreach (ActionBaseModel action in movement.Actions)
@@ -384,38 +416,92 @@ namespace BauChessViewer.Views.Controls
 										actions.Add(GetActionUndoPromotePiece(move));
 									break;
 							}
-					// Crea las animaciones
+					// Muestra las animaciones o ejecuta las acciones
+					if (showAnimation && ViewModel.MustShowAnimation)
+					{ 	
+						Storyboard storyBoard = CreateAnimations(actions);
 
-					// Muestra las imágenes
-					if (showAnimation && sbStoryBoard.Children.Count > 0)
-						sbStoryBoard.Begin();
-					// else
+							// ... y las muestra
+							if (storyBoard.Children.Count > 0)
+							{
+								// Indica que se está realizando un movimiento
+								CanMove = false;
+								// Asigna el evento de fin de animación
+								storyBoard.Completed += (sender, evntArgs) => 
+																{
+																	// Ejecuta las acciones
+																	ExecuteActions(actions);
+																	// Indica que se ha finalizado el movimiento
+																	CanMove = true;
+																};
+								// Comienza la animación
+								storyBoard.Begin();
+							}
+							else
+								ExecuteActions(actions);
+					}
+					else // Ejecuta directamente las acciones sobre el tablero
 						ExecuteActions(actions);
 			}
+		}
+
+		/// <summary>
+		///		Crea las animaciones
+		/// </summary>
+		private Storyboard CreateAnimations(List<ActionViewMovement> actions)
+		{
+			Storyboard storyBoard  = new Storyboard();
+
+				// Limpia el storyBoard
+				storyBoard.Children.Clear();
+				// Asigna las propiedades de duración
+				storyBoard.BeginTime = TimeSpan.FromSeconds(0);
+				storyBoard.Duration = new Duration(TimeSpan.FromSeconds(AnimationTime));
+				// Crea las animaciones
+				foreach (ActionViewMovement action in actions)
+					switch (action?.Type)
+					{
+						case ActionViewMovement.ActionType.Move:
+								AddAnimationToStoryBoard(storyBoard, action.Figure.Image,
+														 CreateDoubleAnimation(GetImageTop(action.Figure.Row), GetImageTop(action.EndRow)),
+														 0, AnimationTime, new PropertyPath(Canvas.TopProperty));
+								AddAnimationToStoryBoard(storyBoard, action.Figure.Image,
+														 CreateDoubleAnimation(GetImageLeft(action.Figure.Column), GetImageLeft(action.EndColumn)),
+														 0, AnimationTime, new PropertyPath(Canvas.LeftProperty));
+							break;
+						case ActionViewMovement.ActionType.Destroy:
+							AddAnimationToStoryBoard(storyBoard, action.Figure.Image,
+													 CreateDoubleAnimation(1, 0),
+													 AnimationTime / 2, AnimationTime, new PropertyPath(Image.OpacityProperty));
+						break;
+					}
+				// Devuelve el storyBoard
+				return storyBoard;
+		}
+
+		/// <summary>
+		///		Crea una animación Double sobre un control
+		/// </summary>
+		private DoubleAnimation CreateDoubleAnimation(double from, double to)
+		{
+			DoubleAnimation animation = new DoubleAnimation();
+
+				// Asigna las propiedades
+				animation.From = from;
+				animation.To = to;
+				// Añade la animación al storyBoard
+				return animation;
 		}
 
 		/// <summary>
 		///		Añade una animación al storyBoard
 		/// </summary>
 		private void AddAnimationToStoryBoard(Storyboard storyBoard, DependencyObject control, AnimationTimeline animation, 
-											  int startSeconds, int endSeconds, PropertyPath propertyPath)
+											  double startSeconds, double endSeconds, PropertyPath propertyPath)
 		{   
 			// Asigna las propiedades de inicio y duración
 			animation.BeginTime = TimeSpan.FromSeconds(startSeconds);
 			animation.Duration = TimeSpan.FromSeconds(endSeconds);
-			//// Asigna las propiedades de velocidad
-			//if (action.Parameters.AccelerationRatio != null)
-			//	animation.AccelerationRatio = action.Parameters.AccelerationRatio ?? 0;
-			//else if (action.TimeLine.Parameters.AccelerationRatio != null)
-			//	animation.AccelerationRatio = action.TimeLine.Parameters.AccelerationRatio ?? 0;
-			//if (action.Parameters.DecelerationRatio != null)
-			//	animation.DecelerationRatio = action.Parameters.DecelerationRatio ?? 0;
-			//else if (action.TimeLine.Parameters.DecelerationRatio != null)
-			//	animation.DecelerationRatio = action.TimeLine.Parameters.DecelerationRatio ?? 0;
-			//if (action.Parameters.SpeedRatio != null)
-			//	animation.SpeedRatio = action.Parameters.SpeedRatio ?? 0;
-			//else if (action.TimeLine.Parameters.SpeedRatio != null)
-			//	animation.SpeedRatio = action.TimeLine.Parameters.SpeedRatio ?? 0;
 			// Añade los datos a la animación
 			Storyboard.SetTarget(animation, control);
 			Storyboard.SetTargetProperty(animation, propertyPath);
@@ -505,7 +591,7 @@ namespace BauChessViewer.Views.Controls
 		{
 			// Ejecuta las acciones
 			foreach (ActionViewMovement action in actions)
-				switch (action.Type)
+				switch (action?.Type)
 				{
 					case ActionViewMovement.ActionType.Move:
 							action.Figure.Row = action.EndRow;
@@ -546,7 +632,16 @@ namespace BauChessViewer.Views.Controls
 		/// </summary>
 		public PgnGameViewModel ViewModel { get; private set; }
 
-		private void UserControl_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+		/// <summary>
+		///		Indica si se puede realizar algún movimiento
+		/// </summary>
+		public bool CanMove
+		{
+			get { return (bool) GetValue(CanMoveProperty); }
+			set { SetValue(CanMoveProperty, value); }
+		}
+
+		private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			ShowImages();
 		}

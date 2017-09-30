@@ -70,5 +70,17 @@ namespace BauChessViewer.Properties {
                 this["ShowVariations"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool MustShowAnimations {
+            get {
+                return ((bool)(this["MustShowAnimations"]));
+            }
+            set {
+                this["MustShowAnimations"] = value;
+            }
+        }
     }
 }

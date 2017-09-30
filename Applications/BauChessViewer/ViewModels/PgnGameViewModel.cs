@@ -25,7 +25,7 @@ namespace BauChessViewer.ViewModels
 		private PathComboImagesViewModel _comboPathBoard, _comboPathPieces;
 		private GameBoardViewModel _gameBoard;
 		private MovementListViewModel _movementsList;
-		private bool _showVariations;
+		private bool _showVariations, _mustShowAnimation;
 
 		public PgnGameViewModel(string pathApplication)
 		{
@@ -224,6 +224,15 @@ namespace BauChessViewer.ViewModels
 				if (CheckProperty(ref _showVariations, value))
 					UpdateSelectedGame();
 			}
+		}
+
+		/// <summary>
+		///		Indica si se deben mostrar las animaciones
+		/// </summary>
+		public bool MustShowAnimation 
+		{ 
+			get { return _mustShowAnimation; }
+			set { CheckProperty(ref _mustShowAnimation, value); }
 		}
 	}
 }

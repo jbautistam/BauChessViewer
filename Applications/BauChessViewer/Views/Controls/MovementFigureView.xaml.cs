@@ -11,7 +11,7 @@ namespace BauChessViewer.Views.Controls
 	{
 		// Propiedades
 		public static readonly DependencyProperty MovementProperty = DependencyProperty.Register(nameof(Movement), typeof(ViewModels.Movements.MovementFigureViewModel),
-																								  typeof(MovementFigureView), new PropertyMetadata(null));
+																								 typeof(MovementFigureView), new PropertyMetadata(null));
 
 		public MovementFigureView()
 		{
